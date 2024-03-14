@@ -409,6 +409,172 @@ class DashboardPage extends StatelessWidget {
                         )
                       ],
                     ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 24),
+                    child: Container(
+                      width: 400,
+                      height: 320,
+                      decoration: ShapeDecoration(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          side: const BorderSide(
+                              width: 1, color: Color(0x0F003B65)),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        shadows: const [
+                          BoxShadow(
+                            color: Color(0x06000000),
+                            blurRadius: 6.52,
+                            offset: Offset(0, 1.79),
+                            spreadRadius: 0,
+                          )
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 187,
+                            height: 187,
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                  left: 0,
+                                  top: 0,
+                                  child: Container(
+                                    width: 187,
+                                    height: 187,
+                                    child: Stack(
+                                      children: [
+                                        Positioned(
+                                          left: 0,
+                                          top: 0,
+                                          child: Container(
+                                            width: 187,
+                                            height: 187,
+                                            decoration: const ShapeDecoration(
+                                              color: Color(0xFFF0BD2D),
+                                              shape: OvalBorder(),
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          left: 0,
+                                          top: 0,
+                                          child: Container(
+                                            width: 187,
+                                            height: 187,
+                                            decoration: const ShapeDecoration(
+                                              color: Color(0xFF003B65),
+                                              shape: OvalBorder(),
+                                              shadows: [
+                                                BoxShadow(
+                                                  color: Color(0x11000000),
+                                                  blurRadius: 13,
+                                                  offset: Offset(0, 2),
+                                                  spreadRadius: 0,
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 16),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Container(
+                                  width: 84,
+                                  height: 35,
+                                  decoration: ShapeDecoration(
+                                    color: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      side: const BorderSide(
+                                          width: 1, color: Color(0xFFEBEBEB)),
+                                      borderRadius:
+                                          BorderRadius.circular(17.50),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: 5,
+                                        height: 5,
+                                        decoration: const ShapeDecoration(
+                                          color: Color(0xFF003B65),
+                                          shape: OvalBorder(),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 3),
+                                      const Opacity(
+                                        opacity: 0.80,
+                                        child: Text(
+                                          'Present',
+                                          style: TextStyle(
+                                            color: Color(0xFF003B65),
+                                            fontSize: 14,
+                                            fontFamily: 'Gilroy',
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  width: 84,
+                                  height: 35,
+                                  decoration: ShapeDecoration(
+                                    color: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      side: const BorderSide(
+                                          width: 1, color: Color(0xFFEBEBEB)),
+                                      borderRadius:
+                                          BorderRadius.circular(17.50),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        width: 5,
+                                        height: 5,
+                                        decoration: const ShapeDecoration(
+                                          color: Color(0xFFF0BD2D),
+                                          shape: OvalBorder(),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 3),
+                                      const Opacity(
+                                        opacity: 0.80,
+                                        child: Text(
+                                          'Absent',
+                                          style: TextStyle(
+                                            color: Color(0xFFF0BD2D),
+                                            fontSize: 14,
+                                            fontFamily: 'Gilroy',
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
                   )
                 ],
               ),
