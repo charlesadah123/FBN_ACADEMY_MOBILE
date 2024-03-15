@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "275873199117",
+    "project_id": "firstattendance-2f7a4",
+    "storage_bucket": "firstattendance-2f7a4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:275873199117:android:03a7068f0671db7b439144",
+        "android_client_info": {
+          "package_name": "com.example.fbn_academy_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyApjZBHv5zfTs7oVf1NQ34ZrMwlBtljr7M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
