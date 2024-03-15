@@ -19,6 +19,7 @@ class DashboardPage extends StatelessWidget {
               padding: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
               child: Column(
                 children: [
+                  // this is the search bar widget
                   Container(
                       decoration: ShapeDecoration(
                         color: Colors.white,
@@ -168,6 +169,7 @@ class DashboardPage extends StatelessWidget {
                           ],
                         ),
                       )),
+                  // this is the attendance & calender widget
                   Padding(
                     padding: const EdgeInsets.only(top: 39),
                     child: Row(
@@ -216,6 +218,7 @@ class DashboardPage extends StatelessWidget {
                       ],
                     ),
                   ),
+                  // this is the days attended & check in time widget
                   Padding(
                     padding: const EdgeInsets.only(top: 24),
                     child: Row(
@@ -410,6 +413,7 @@ class DashboardPage extends StatelessWidget {
                       ],
                     ),
                   ),
+                  // this contains the pie chart widget
                   Padding(
                     padding: const EdgeInsets.only(top: 24),
                     child: Container(
@@ -434,6 +438,7 @@ class DashboardPage extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          // this is the pie chart widget container
                           Container(
                             width: 187,
                             height: 187,
@@ -583,5 +588,14 @@ class DashboardPage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class PieChart extends StatelessWidget {
+  const PieChart({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
   }
 }
