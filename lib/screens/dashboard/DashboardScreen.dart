@@ -1,5 +1,6 @@
-// ignore_for_file: file_names, avoid_unnecessary_containers, sized_box_for_whitespace
+// ignore_for_file: file_names, avoid_unnecessary_containers, sized_box_for_whitespace, unused_local_variable
 
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class DashboardPage extends StatelessWidget {
@@ -442,52 +443,58 @@ class DashboardPage extends StatelessWidget {
                           Container(
                             width: 187,
                             height: 187,
-                            child: Stack(
+                            child: const Stack(
+                              alignment: Alignment.center,
                               children: [
-                                Positioned(
-                                  left: 0,
-                                  top: 0,
-                                  child: Container(
-                                    width: 187,
-                                    height: 187,
-                                    child: Stack(
-                                      children: [
-                                        Positioned(
-                                          left: 0,
-                                          top: 0,
-                                          child: Container(
-                                            width: 187,
-                                            height: 187,
-                                            decoration: const ShapeDecoration(
-                                              color: Color(0xFFF0BD2D),
-                                              shape: OvalBorder(),
-                                            ),
-                                          ),
-                                        ),
-                                        Positioned(
-                                          left: 0,
-                                          top: 0,
-                                          child: Container(
-                                            width: 187,
-                                            height: 187,
-                                            decoration: const ShapeDecoration(
-                                              color: Color(0xFF003B65),
-                                              shape: OvalBorder(),
-                                              shadows: [
-                                                BoxShadow(
-                                                  color: Color(0x11000000),
-                                                  blurRadius: 13,
-                                                  offset: Offset(0, 2),
-                                                  spreadRadius: 0,
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                Text(
+                                  '75%',
+                                  style: TextStyle(
+                                    color: Color(0xFF003B65),
+                                    fontSize: 36,
+                                    fontFamily: 'Gilroy',
+                                    fontWeight: FontWeight.w800,
+                                    height: 0,
                                   ),
                                 ),
+                                AttendancePieChart(),
+                                // Positioned(
+                                //   child: Container(
+                                //     width: 187,
+                                //     height: 187,
+                                //     child: Stack(
+                                //       children: [
+                                //         Positioned(
+                                //           child: Container(
+                                //             width: 187,
+                                //             height: 187,
+                                //             decoration: const ShapeDecoration(
+                                //               color: Color(0xFFF0BD2D),
+                                //               shape: OvalBorder(),
+                                //             ),
+                                //           ),
+                                //         ),
+                                //         Positioned(
+                                //           child: Container(
+                                //             width: 187,
+                                //             height: 187,
+                                //             decoration: const ShapeDecoration(
+                                //               color: Color(0xFF003B65),
+                                //               shape: OvalBorder(),
+                                //               shadows: [
+                                //                 BoxShadow(
+                                //                   color: Color(0x11000000),
+                                //                   blurRadius: 13,
+                                //                   offset: Offset(0, 2),
+                                //                   spreadRadius: 0,
+                                //                 )
+                                //               ],
+                                //             ),
+                                //           ),
+                                //         ),
+                                //       ],
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),
@@ -580,6 +587,42 @@ class DashboardPage extends StatelessWidget {
                         ],
                       ),
                     ),
+                  ),
+                  // this is the list of absentee leaves
+                  const AbsenteeLeaveSection(
+                    absenteeReason: ['Lateness', 'Sick Leaves', 'Other Leaves'],
+                    numberOfDays: ['1 Day', '2 Days', '0 Day'],
+                  ),
+                  // this is the take attendance button
+                  Container(
+                    padding: const EdgeInsets.only(),
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => {
+                        showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return const Placeholder();
+                            })
+                      },
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(32),
+                          ),
+                          backgroundColor: const Color(0xFFF0BD2D),
+                          minimumSize: const Size(10.0, 44.0)),
+                      child: const Text(
+                        'Take Attendance',
+                        style: TextStyle(
+                          color: Color(0xFF003B65),
+                          fontSize: 16,
+                          fontFamily: 'Gilroy',
+                          fontWeight: FontWeight.w600,
+                          height: 0,
+                        ),
+                      ),
+                    ),
                   )
                 ],
               ),
@@ -591,11 +634,186 @@ class DashboardPage extends StatelessWidget {
   }
 }
 
-class PieChart extends StatelessWidget {
-  const PieChart({super.key});
+class AttendancePieChart extends StatelessWidget {
+  const AttendancePieChart({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return PieChart(
+      swapAnimationDuration: const Duration(milliseconds: 750),
+      swapAnimationCurve: Curves.easeInOutQuint,
+      PieChartData(sections: [
+        // present
+        PieChartSectionData(
+          value: 75,
+          color: const Color(0xFF003B65),
+        ),
+
+        // absent
+        PieChartSectionData(
+          value: 25,
+          color: const Color(0xFFF0BD2D),
+        ),
+      ]),
+    );
+  }
+}
+
+class AbsenteeLeaveSection extends StatelessWidget {
+  const AbsenteeLeaveSection(
+      {super.key, required this.absenteeReason, required this.numberOfDays});
+
+  final List<String> absenteeReason;
+  final List<String> numberOfDays;
+
+  // Map each reason for absence to its corresponding icon
+  static Map<String, Icon> reasonsForAbsence = {
+    'Lateness': const Icon(Icons.alarm, color: Color(0xFFF0BD2D)),
+    'Sick Leaves': const Icon(Icons.sick_outlined, color: Color(0xFFF0BD2D)),
+    'Other Leaves': const Icon(Icons.list_alt, color: Color(0xFFF0BD2D)),
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 24),
+      child: Column(
+        children: [
+          ListView.builder(
+              shrinkWrap: true,
+              itemCount: absenteeReason.length,
+              itemBuilder: (context, index) {
+                final reasonOfAbsence = absenteeReason[index];
+                final daysOfAbsence = numberOfDays[index];
+                final reasonIcon = reasonsForAbsence[reasonOfAbsence];
+
+                return FadeIn(
+                  // Delay each item's animation
+                  delay: Duration(milliseconds: index * 100),
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: Container(
+                      height: 100,
+                      decoration: ShapeDecoration(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                            width: 1,
+                            color:
+                                Colors.black.withOpacity(0.05999999865889549),
+                          ),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 29.0, right: 16),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  child: reasonIcon ??
+                                      const Icon(
+                                        Icons.alarm,
+                                        color: Colors.black,
+                                      ),
+                                ),
+                              ),
+                              Opacity(
+                                opacity: 0.8,
+                                child: Text(
+                                  reasonOfAbsence,
+                                  style: const TextStyle(
+                                    color: Color(0xFF003B65),
+                                    fontSize: 18,
+                                    fontFamily: 'Gilroy',
+                                    fontWeight: FontWeight.w400,
+                                    height: 0,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 29.0),
+                            child: Opacity(
+                              opacity: 0.4,
+                              child: Text(
+                                daysOfAbsence,
+                                style: const TextStyle(
+                                  color: Color(0xFF003B65),
+                                  fontSize: 16,
+                                  fontFamily: 'Gilroy',
+                                  fontWeight: FontWeight.w500,
+                                  height: 0,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }),
+        ],
+      ),
+    );
+  }
+}
+
+class FadeIn extends StatefulWidget {
+  const FadeIn({super.key, required this.child, required this.delay});
+
+  final Widget child;
+  final Duration delay;
+
+  @override
+  State<FadeIn> createState() => _FadeInState();
+}
+
+class _FadeInState extends State<FadeIn> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200), // Adjust animation duration
+      // Adjust reverse animation duration
+      reverseDuration: const Duration(milliseconds: 200),
+    );
+    _animation = Tween<double>(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeIn, // Adjust animation curve
+      ),
+    );
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+      opacity: _animation,
+      child: widget.child,
+    );
   }
 }
