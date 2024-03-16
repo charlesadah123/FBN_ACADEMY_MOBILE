@@ -9,7 +9,7 @@ class BiometricService{
 
 
   @override
-  Future<bool> fingerPrintAuth() async {
+  Future<bool> biometricAuth() async {
     try {
       bool canCheckBiometrics = await auth.canCheckBiometrics;
       if (canCheckBiometrics) {
@@ -46,7 +46,7 @@ class BiometricService{
       return false;
     }
   }
-
+/*
   @override
   Future<bool> faceIDAuth() async {
     try {
@@ -88,5 +88,5 @@ class BiometricService{
     }
 
   }
-
+*/
 }

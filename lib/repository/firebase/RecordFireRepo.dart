@@ -1,9 +1,10 @@
-import 'package:fbn_academy_mobile/repository/abs/RecordRepo.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import '../../common/Constants.dart';
 import '../../models/Record.dart';
+import '../abs/RecordRepo.dart';
 
 class RecordFireRepo implements RecordRepo {
 
@@ -14,7 +15,11 @@ class RecordFireRepo implements RecordRepo {
   @override
   Future<void> createRecord(AttendanceRecord record) async{
     if( user!= null) {
-     return await db_records.child(user!.uid).update(record.toJson());
+      DatabaseReference pushed= await db_records.child(user!.uid).push();
+      record.id=pushed.key;
+      pushed.set(record.toJson());
+    //.update(record.toJson());
+
     }
   }
 
@@ -38,8 +43,9 @@ class RecordFireRepo implements RecordRepo {
 
       if (snapshot.value != null) {
         // Iterate through the snapshot and convert each user's data to IUser object
-        snapshot.children.forEach((child) {
-          AttendanceRecord rec = AttendanceRecord.fromJson(child as Map<String, dynamic>);
+        snapshot.children.forEach(
+                (child) {
+          AttendanceRecord rec = AttendanceRecord.fromJson(child.value as Map<dynamic, dynamic>);
             recordList.add(rec);
         });
       }
@@ -59,7 +65,8 @@ class RecordFireRepo implements RecordRepo {
 
   @override
   Future<void> updateRecord(AttendanceRecord record) async{
-    return await createRecord(record);
+    return await db_records.child(user!.uid).child(record.id ?? "---").update(record.toJson());
+
   }
 
 

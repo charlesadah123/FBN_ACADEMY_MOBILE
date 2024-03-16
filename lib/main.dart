@@ -1,12 +1,19 @@
+import 'package:fbn_academy_mobile/common/Constants.dart';
+import 'package:fbn_academy_mobile/models/Record.dart';
+import 'package:fbn_academy_mobile/models/RecordSetting.dart';
 import 'package:fbn_academy_mobile/services/AuthService.dart';
 import 'package:fbn_academy_mobile/services/BiometricService.dart';
 import 'package:fbn_academy_mobile/services/LocationService.dart';
 import 'package:fbn_academy_mobile/services/RecordService.dart';
+import 'package:fbn_academy_mobile/services/RecordSettingService.dart';
 import 'package:fbn_academy_mobile/services/UserService.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'firebase_options.dart';
+import 'models/User.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,58 +50,127 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  FirebaseAuth authFire = FirebaseAuth.instance;
   AuthService authService = AuthService();
   RecordService recordService = RecordService();
+  RecordSettingService recordSettingService = RecordSettingService();
   UserService userService = UserService();
   BiometricService biometricService = BiometricService();
   LocationService locationService = LocationService();
   TextEditingController smsCodeCtrl = new TextEditingController();
 
-  String _authenticationResult = '';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Authentication Test'),
+        title: Text('User Test'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: _authenticateWithFingerprint,
-              child: Text('Authenticate with Fingerprint'),
+              onPressed: _sendOtp,
+              child: Text('Send OTP'),
+            ),
+            TextFormField(
+              controller: smsCodeCtrl,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  hintText: "verify otp"),
             ),
             ElevatedButton(
-              onPressed: _authenticateWithFaceID,
-              child: Text('Authenticate with Face ID'),
+              onPressed: _verifyOtp,
+              child: Text('Verify OTP'),
             ),
-            SizedBox(height: 20),
-            Text(_authenticationResult),
+            ElevatedButton(
+              onPressed: _createUser,
+              child: Text('Create User'),
+            ),
+            ElevatedButton(
+              onPressed: _readUser,
+              child: Text('Read User'),
+            ),
+            ElevatedButton(
+              onPressed: _updateUser,
+              child: Text('Update User'),
+            ),
+            ElevatedButton(
+              onPressed: _deleteUser,
+              child: Text('Delete User'),
+            ),
           ],
         ),
       ),
     );
   }
 
-  void _authenticateWithFingerprint() async {
-    bool isAuthenticated =
-        await biometricService.fingerPrintAuth();
-    setState(() {
-      _authenticationResult = isAuthenticated
-          ? 'Fingerprint authentication successful'
-          : 'Fingerprint authentication failed';
-    });
+  void _sendOtp() async {
+    await authService.verifyPhone(
+        '+2348119546842'); // Replace with the phone number to send OT
   }
 
-  void _authenticateWithFaceID() async {
-    bool isAuthenticated =
-        await biometricService.faceIDAuth();
-    setState(() {
-      _authenticationResult = isAuthenticated
-          ? 'Face ID authentication successful'
-          : 'Face ID authentication failed';
-    });
+  void _verifyOtp() async {
+    await authService.otpAuth(smsCodeCtrl.text.trim());
+  }
+
+  void _createUser() async {
+    // Replace these values with the actual user data you want to create
+
+    if (authFire.currentUser != null) {
+      await recordSettingService.createRecordSetting(RecordSetting(
+          id: "first",
+          startTime: DateTime.timestamp().,
+          stopTime: stopTime,
+          startLateTime: startLateTime,
+          stopLateTime: stopLateTime,
+          lat: lat,
+          lon: lon,
+          createdAt: createdAt,
+          updatedAt: updatedAt));
+    } else {
+      print("firebase user is null");
+    }
+  }
+
+  void _readUser() async {
+    if (authFire.currentUser != null) {
+      // Replace this with the actual user ID you want to read
+      List<AttendanceRecord>? attendanceRecord =
+          await recordService.getAllRecordById(0);
+      print('record: ${attendanceRecord![0]!.toJsonString()}');
+    } else {
+      print("firebase user is null");
+    }
+  }
+
+  void _updateUser() async {
+    if (authFire.currentUser != null) {
+      await recordService.updateRecord(AttendanceRecord(
+          id: "-Nt5KrEEXwhV9zQfktj1",
+          userId: authFire.currentUser!.uid,
+          checkInTime: DateTime.now(),
+          isPresent: true,
+          isLate: false,
+          isSickLeave: false,
+          isOtherLeave: false,
+          deviceToken: "666666",
+          userToken: "666666",
+          updatedAt: DateTime.now(),
+          createdAt: DateTime.now()));
+    } else {
+      print("firebase user is null");
+    }
+  }
+
+  void _deleteUser() async {
+    if (authFire.currentUser != null) {
+      await recordService.deleteRecord(0);
+      print('User deleted successfully');
+    } else {
+      print("firebase user is null");
+    }
   }
 }

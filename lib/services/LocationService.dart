@@ -4,11 +4,12 @@ import '../common/Constants.dart';
 
 class LocationService {
 
-  Future<Position> _determinePosition() async {
+  Future<Position> determinePosition() async {
     // Check if location services are enabled.
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       throw LocationServiceException('Location services are disabled.');
+      //show a dialog here
     }
 
     // Check location permissions.
@@ -32,14 +33,14 @@ class LocationService {
   }
 
 
-  Future<double> calculateProximity() async {
-    Position position= await _determinePosition();
+  Future<double> calculateProximity(double lat, double lon) async {
+    Position position= await determinePosition();
 
     return await Geolocator.distanceBetween(
       position.latitude,
       position.longitude,
-      MyConstants.firstAcademyLat,
-      MyConstants.firstAcademyLong,
+      lat,
+      lon,
     );
   }
 }

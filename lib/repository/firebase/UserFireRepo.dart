@@ -16,8 +16,8 @@ class UserFireRepo implements UserRepo{
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   String? deviceid;
 
-  Future<Map<String,dynamic>?> _setdeviceinfo() async {
-    Map<String, dynamic?> mapDeviceInfo;
+  Future<Map<dynamic,dynamic>?> _setdeviceinfo() async {
+    Map<dynamic, dynamic?> mapDeviceInfo;
 
     if (GetPlatform.isAndroid == true) {
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
@@ -30,7 +30,7 @@ class UserFireRepo implements UserRepo{
         Dbkeys.deviceInfoOSID: androidInfo.androidId,
         Dbkeys.deviceInfoOSVERSION: androidInfo.version.baseOS,
         Dbkeys.deviceInfoMANUFACTURER: androidInfo.manufacturer,
-        Dbkeys.deviceInfoLOGINTIMESTAMP: DateTime.now(),
+        Dbkeys.deviceInfoLOGINTIMESTAMP: DateTime.now().toIso8601String(),
       };
     }
     else if (GetPlatform.isIOS == true) {
@@ -45,7 +45,7 @@ class UserFireRepo implements UserRepo{
         Dbkeys.deviceInfoOSID: iosInfo.name,
         Dbkeys.deviceInfoOSVERSION: iosInfo.name,
         Dbkeys.deviceInfoMANUFACTURER: iosInfo.name,
-        Dbkeys.deviceInfoLOGINTIMESTAMP: DateTime.now(),
+        Dbkeys.deviceInfoLOGINTIMESTAMP: DateTime.now().toIso8601String(),
       };
 
     }
@@ -55,7 +55,7 @@ class UserFireRepo implements UserRepo{
   Future<void> createUser(AUser aUser) async{
     if( user!= null) {
       aUser.deviceInfo= await _setdeviceinfo();
-      return await db_users.child(user!.uid).update(aUser.toJson());
+       await db_users.child(user!.uid).set(aUser.toJson());
     }
   }
 
@@ -69,30 +69,27 @@ class UserFireRepo implements UserRepo{
   @override
   Future<AUser?> getUserById(int id) async{
     if(user !=null){
-      return await db_users.child(user!.uid).get().then((snapshot){
+     DataSnapshot snapshot=  await db_users.child(user!.uid).get();
         if (snapshot.value != null) {
-          Map<String, dynamic> newPost = snapshot.value as Map<String, dynamic>;
-          return AUser.fromJson(newPost);
+          Map<dynamic, dynamic> newPost = snapshot.value as Map<dynamic, dynamic>;
+          AUser? a= AUser.fromJson(newPost);
+          print('User data: ${a!.toJsonString()}');
+
+          return a;
         } else {
           return null; // User not found
         }
 
-      },
-          onError:
-              (){
-            print("error getting user");
-            return null;
-          }
-      );
+      }
     }
 
-    return null;
 
-  }
 
   @override
   Future<void> updateUser(AUser aUser) async{
-    return await createUser(aUser);
+    if( user!= null) {
+     await db_users.child(user!.uid).update(aUser.toJson());
+    }
   }
 
 

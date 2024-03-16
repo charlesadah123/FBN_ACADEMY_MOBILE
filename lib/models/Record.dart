@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 class AttendanceRecord {
+   String? id;
   final String userId;
   final DateTime checkInTime;
   final bool isPresent;
@@ -9,11 +10,12 @@ class AttendanceRecord {
   final bool isOtherLeave;
   final String deviceToken;
   final String userToken;
-  final DateTime createdAt;
+   DateTime? createdAt;
   final DateTime updatedAt;
 
 
   AttendanceRecord({
+    this.id,
       required this.userId,
     required this.checkInTime,
     required this.isPresent,
@@ -22,11 +24,12 @@ class AttendanceRecord {
     required this.isOtherLeave,
     required this.deviceToken,
     required this.userToken,
-    required  this.createdAt,
+      this.createdAt,
     required this.updatedAt});
 
-  factory AttendanceRecord.fromJson(Map<String, dynamic> json) {
+  factory AttendanceRecord.fromJson(Map<dynamic, dynamic> json) {
     return AttendanceRecord(
+      id: json['id'],
       userId: json['userId'] ,
       checkInTime: DateTime.parse(json['checkInTime']),
       isPresent: json['isPresent'] ,
@@ -43,6 +46,7 @@ class AttendanceRecord {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'userId': userId,
       'checkInTime': checkInTime.toIso8601String(),
       'isPresent': isPresent,
@@ -50,7 +54,7 @@ class AttendanceRecord {
       'isSickLeave': isSickLeave,
       'isOtherLeave': isOtherLeave,
       'updatedAt' :updatedAt.toIso8601String(),
-      'createdAt': createdAt.toIso8601String(),
+      'createdAt': createdAt!.toIso8601String(),
       'deviceToken': deviceToken,
       'userToken':userToken,
     };

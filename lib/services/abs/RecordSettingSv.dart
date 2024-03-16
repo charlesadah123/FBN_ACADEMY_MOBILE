@@ -8,9 +8,7 @@ abstract class RecordSettingSv {
 
   Future<void> deleteRecordSetting(int id) ;
 
-  Future<List<RecordSetting>?> getAllRecordSettingById(int id);
-
-  Future<RecordSetting?> getRecordSettingById(int id);
+  Future<RecordSetting?> getRecordSetting();
 
   Future<void> updateRecordSetting(RecordSetting record);
 

@@ -19,7 +19,7 @@ class UserService implements UserSv {
 
   @override
   Future<AUser?> getUserById(int id) async{
-    await _userRepo.getUserById(id);
+    return await _userRepo.getUserById(id);
   }
 
   @override

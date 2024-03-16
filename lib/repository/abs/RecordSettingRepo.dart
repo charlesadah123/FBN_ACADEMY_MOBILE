@@ -5,9 +5,6 @@ abstract class RecordSettingRepo {
   // Create a new Record
   Future<void> createRecordSetting(RecordSetting RecordSetting);
 
-  // Retrieve a RecordSetting by ID
-  Future<RecordSetting?> getRecordSettingById(int id);
-
   // Update an existing RecordSetting
   Future<void> updateRecordSetting(RecordSetting RecordSetting);
 
@@ -15,5 +12,5 @@ abstract class RecordSettingRepo {
   Future<void> deleteRecordSetting(int id);
 
 // Delete a RecordSetting by ID
-  Future<List<RecordSetting>?> getAllRecordSettingById(int id);
+  Future<RecordSetting?> getRecordSetting();
 }

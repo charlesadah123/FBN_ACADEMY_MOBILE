@@ -8,7 +8,7 @@ class AUser {
   final String phone;
   final String password; // Consider using a secure storage solution instead of storing passwords directly
   String? profilePictureUrl;
-  late Map<String,dynamic>? deviceInfo;
+   Map<dynamic,dynamic>? deviceInfo;
 
   AUser({
     required this.id,
@@ -17,11 +17,11 @@ class AUser {
     required this.phone,
     required this.password,
     required this.profilePictureUrl,
-    required this.deviceInfo
+     this.deviceInfo
   });
 
 
-  factory AUser.fromJson(Map<String, dynamic> json) {
+  factory AUser.fromJson(Map<dynamic, dynamic> json) {
     return AUser(
       id: json['id'] ,
       fullName: json['fullName'] ,

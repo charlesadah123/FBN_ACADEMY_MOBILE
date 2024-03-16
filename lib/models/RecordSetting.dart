@@ -16,7 +16,7 @@ class RecordSetting {
   RecordSetting({ required this.id, required this.startTime, required this.stopTime, required this.startLateTime,
     required this.stopLateTime,required this.lat, required this.lon,required this.createdAt,required this.updatedAt});
 
-  factory RecordSetting.fromJson(Map<String, dynamic> json) {
+  factory RecordSetting.fromJson(Map<dynamic, dynamic> json) {
     return RecordSetting(
       id: json['id'] ,
       startTime: DateTime.parse(json['startTime']),

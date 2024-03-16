@@ -13,56 +13,35 @@ class RecordSettingFireRepo implements RecordSettingRepo {
   DatabaseReference db_RecordSettings= FirebaseDatabase.instance.ref(DbPaths.recordSetting);
 
 
+
   @override
-  Future<void> createRecordSetting(RecordSetting RecordSetting) async{
+  Future<void> createRecordSetting(RecordSetting recordSetting) async{
     if( user!= null) {
-     return await db_RecordSettings.child(user!.uid).update(RecordSetting.toJson());
+       await db_RecordSettings.push().set(recordSetting.toJson());
+      //.update(record.toJson());
     }
   }
 
   @override
   Future<void> deleteRecordSetting(int id) async{
 
+  }
+
+  @override
+  Future<RecordSetting?> getRecordSetting() async{
+
     if(user !=null){
-      return await db_RecordSettings.child(user!.uid).remove();
+      DataSnapshot snapshot = await db_RecordSettings.get();
+      RecordSetting rec = RecordSetting.fromJson(snapshot as Map<dynamic, dynamic>);
+
+      return rec;
     }
 
   }
 
   @override
-  Future<List<RecordSetting>?> getAllRecordSettingById(int id) async{
+  Future<void> updateRecordSetting(RecordSetting recordSetting) async{
 
-    if(user !=null){
-
-      DataSnapshot snapshot = await db_RecordSettings.child(user!.uid).get();
-
-      List<RecordSetting> RecordSettingList = [];
-
-      if (snapshot.value != null) {
-        // Iterate through the snapshot and convert each user's data to IUser object
-        snapshot.children.forEach((child) {
-          RecordSetting rec = RecordSetting.fromJson(child as Map<String, dynamic>);
-            RecordSettingList.add(rec);
-        });
-      }
-      return RecordSettingList;
-
-    }
-
-  }
-
-  @override
-  Future<RecordSetting?> getRecordSettingById(int id) async{
-    if(user !=null){
-      DataSnapshot snapshot= await db_RecordSettings.get();
-      return snapshot as RecordSetting;
-    }
-    return null;
-  }
-
-  @override
-  Future<void> updateRecordSetting(RecordSetting RecordSetting) async{
-    return await createRecordSetting(RecordSetting);
   }
 
 

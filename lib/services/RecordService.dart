@@ -21,7 +21,7 @@ class RecordService implements RecordSv {
 
   @override
   Future<List<AttendanceRecord>?> getAllRecordById(int id) async {
-    await _recordRepo.getAllRecordById(id);
+   return await _recordRepo.getAllRecordById(id);
   }
 
   @override

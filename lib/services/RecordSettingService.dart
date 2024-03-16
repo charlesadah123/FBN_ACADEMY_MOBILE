@@ -24,14 +24,10 @@ class RecordSettingService implements RecordSettingSv {
     await _RecordSettingRepo.deleteRecordSetting(id);
   }
 
-  @override
-  Future<List<RecordSetting>?> getAllRecordSettingById(int id) async {
-    await _RecordSettingRepo.getAllRecordSettingById(id);
-  }
 
   @override
-  Future<RecordSetting?> getRecordSettingById(int id) async {
-    await _RecordSettingRepo.getRecordSettingById(id);
+  Future<RecordSetting?> getRecordSetting() async {
+    await _RecordSettingRepo.getRecordSetting();
   }
 
   @override
