@@ -2,6 +2,8 @@ class MyConstants{
 
   static double firstAcademyLong=3.36125255460304;
   static double firstAcademyLat=6.481096177043414;
+  static String encryptionKey1 = "ZGRgMOnXZHCP7tf0m6SCwbmZfT5XpZrXG_c7jyHovCY=";
+  static String encryptionKey2 = "C5scNNiglRAF-b-EjmqH7XfbewEGxkXzF2n7fRbab-0=";
 }
 class DbPaths{
 

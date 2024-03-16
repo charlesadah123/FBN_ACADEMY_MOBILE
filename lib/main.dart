@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:fbn_academy_mobile/common/Constants.dart';
 import 'package:fbn_academy_mobile/models/Record.dart';
 import 'package:fbn_academy_mobile/models/RecordSetting.dart';
@@ -10,8 +13,8 @@ import 'package:fbn_academy_mobile/services/UserService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'common/UtilServices.dart';
 import 'firebase_options.dart';
 import 'models/User.dart';
 
@@ -57,6 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
   UserService userService = UserService();
   BiometricService biometricService = BiometricService();
   LocationService locationService = LocationService();
+  UtilServices uServices = UtilServices();
   TextEditingController smsCodeCtrl = new TextEditingController();
 
   @override
@@ -116,26 +120,12 @@ class _MyHomePageState extends State<MyHomePage> {
     await authService.otpAuth(smsCodeCtrl.text.trim());
   }
 
+
   void _createUser() async {
     // Replace these values with the actual user data you want to create
     if (authFire.currentUser != null) {
-      await recordSettingService.createRecordSetting(
-          RecordSetting(
-          id: "first",
-          startTime: DateTime(
-              DateTime.now().year, DateTime.now().month,
-              DateTime.now().day, 06, 00),
-          stopTime: DateTime(
-              DateTime.now().year, DateTime.now().month,
-              DateTime.now().day, 80, 00),
-          stopLateTime: DateTime(
-              DateTime.now().year, DateTime.now().month,
-              DateTime.now().day, 09, 00),
-          lat: 6.481096177043414,
-          lon: 3.36125255460304,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now())
-      );
+
+   uServices.g
     }
     else {
       print("firebase user is null");
