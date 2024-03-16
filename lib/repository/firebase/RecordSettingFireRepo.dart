@@ -17,7 +17,7 @@ class RecordSettingFireRepo implements RecordSettingRepo {
   @override
   Future<void> createRecordSetting(RecordSetting recordSetting) async{
     if( user!= null) {
-       await db_RecordSettings.push().set(recordSetting.toJson());
+       await db_RecordSettings.child(recordSetting.id).set(recordSetting.toJson());
       //.update(record.toJson());
     }
   }

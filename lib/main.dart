@@ -118,19 +118,26 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _createUser() async {
     // Replace these values with the actual user data you want to create
-
     if (authFire.currentUser != null) {
-      await recordSettingService.createRecordSetting(RecordSetting(
+      await recordSettingService.createRecordSetting(
+          RecordSetting(
           id: "first",
-          startTime: DateTime.timestamp().,
-          stopTime: stopTime,
-          startLateTime: startLateTime,
-          stopLateTime: stopLateTime,
-          lat: lat,
-          lon: lon,
-          createdAt: createdAt,
-          updatedAt: updatedAt));
-    } else {
+          startTime: DateTime(
+              DateTime.now().year, DateTime.now().month,
+              DateTime.now().day, 06, 00),
+          stopTime: DateTime(
+              DateTime.now().year, DateTime.now().month,
+              DateTime.now().day, 80, 00),
+          stopLateTime: DateTime(
+              DateTime.now().year, DateTime.now().month,
+              DateTime.now().day, 09, 00),
+          lat: 6.481096177043414,
+          lon: 3.36125255460304,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now())
+      );
+    }
+    else {
       print("firebase user is null");
     }
   }

@@ -5,7 +5,6 @@ class RecordSetting {
   final String id;
   final DateTime startTime;
   final DateTime stopTime;
-  final DateTime startLateTime;
   final DateTime stopLateTime;
   final double lat;
   final double lon;
@@ -13,7 +12,7 @@ class RecordSetting {
   final DateTime updatedAt;
 
 
-  RecordSetting({ required this.id, required this.startTime, required this.stopTime, required this.startLateTime,
+  RecordSetting({ required this.id, required this.startTime, required this.stopTime,
     required this.stopLateTime,required this.lat, required this.lon,required this.createdAt,required this.updatedAt});
 
   factory RecordSetting.fromJson(Map<dynamic, dynamic> json) {
@@ -21,7 +20,6 @@ class RecordSetting {
       id: json['id'] ,
       startTime: DateTime.parse(json['startTime']),
       stopTime:  DateTime.parse(json['stopTime']),
-      startLateTime: DateTime.parse(json['startLateTime']),
       stopLateTime:  DateTime.parse(json['stopLateTime']),
       lat: json['lat'] ,
       lon: json['lon'] ,
@@ -35,8 +33,7 @@ class RecordSetting {
       'id': id,
       'startTime': startTime.toIso8601String(),
       'stopTime': stopTime.toIso8601String(),
-      'startLateTime': startLateTime.toIso8601String(),
-      'stopLateTime': stopLateTime.toIso8601String(),
+     'stopLateTime': stopLateTime.toIso8601String(),
       'lat': lat,
       'lon':lon,
       'updatedAt': updatedAt.toIso8601String(),
