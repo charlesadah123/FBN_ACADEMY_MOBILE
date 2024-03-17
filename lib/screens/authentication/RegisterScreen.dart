@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'LoginScreen.dart';
 
 class ScanFacePage extends StatelessWidget {
   const ScanFacePage({super.key});
@@ -246,12 +245,7 @@ class SignUp extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
         width: double.infinity,
         child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginPage()),
-            );
-          },
+          onPressed: () {},
           style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32.0)),
