@@ -124,8 +124,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void _createUser() async {
     // Replace these values with the actual user data you want to create
     if (authFire.currentUser != null) {
-
-   uServices.g
     }
     else {
       print("firebase user is null");
@@ -137,7 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // Replace this with the actual user ID you want to read
       List<AttendanceRecord>? attendanceRecord =
           await recordService.getAllRecordById(0);
-      print('record: ${attendanceRecord![0]!.toJsonString()}');
+      print('record: ${attendanceRecord![0].toJsonString()}');
     } else {
       print("firebase user is null");
     }
@@ -154,7 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
           isSickLeave: false,
           isOtherLeave: false,
           deviceToken: "666666",
-          userToken: "666666",
+          userToken: "-666666",
           updatedAt: DateTime.now(),
           createdAt: DateTime.now()));
     } else {

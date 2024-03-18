@@ -12,25 +12,23 @@ import '../abs/AuthRepo.dart';
 class AuthFireRepo implements AuthRepo {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   late String verificationId;
-
   int? resendToken;
 
   @override
-  Future<void> otpAuth(String smsCode) async {
+  Future<UserCredential> otpAuth(String smsCode) async {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
       verificationId: verificationId!,
       smsCode: smsCode,
     );
 
     // Sign the user in (or link) with the credential
-    _handlePhoneSignIn(credential);
+   return await _handlePhoneSignIn(credential);
   }
 
   @override
-  Future<void> emailPasswordSignIn(String email, String password) async {
+  Future<UserCredential?> emailPasswordSignIn(String email, String password) async {
     try {
-      final credential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      return await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -45,8 +43,8 @@ class AuthFireRepo implements AuthRepo {
     }
   }
 
-  _handlePhoneSignIn(PhoneAuthCredential credential) async {
-    await firebaseAuth.signInWithCredential(credential);
+  Future<UserCredential> _handlePhoneSignIn(PhoneAuthCredential credential) async {
+    return await firebaseAuth.signInWithCredential(credential);
   }
 
   @override
@@ -64,12 +62,13 @@ class AuthFireRepo implements AuthRepo {
     );
   }
 
-  mVerCompleted(PhoneAuthCredential credential) {
+  Future<UserCredential?> mVerCompleted(PhoneAuthCredential credential) async{
     if (GetPlatform.isAndroid == true) {
-      _handlePhoneSignIn(credential);
+     return await _handlePhoneSignIn(credential);
     }
   }
 
+  @override
   Future logOut()async{
 
     await FirebaseAuth.instance.signOut();

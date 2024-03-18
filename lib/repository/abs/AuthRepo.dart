@@ -1,11 +1,13 @@
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 import '../../models/User.dart';
 
 abstract class AuthRepo {
 
-  Future<void> emailPasswordSignIn(String email, String password);
+  Future<UserCredential?> emailPasswordSignIn(String email, String password);
 
-  Future<void> otpAuth(String smsCode);
+  Future<UserCredential?> otpAuth(String smsCode);
 
   Future<void> verifyPhone({required String phone});
 

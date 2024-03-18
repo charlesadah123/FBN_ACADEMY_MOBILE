@@ -13,14 +13,16 @@ class DbPaths{
 }
 class Dbkeys {
   //------- device info
-  static const String deviceInfoDEVICEID = 'Device ID';
-  static const String deviceInfoOSID = 'Os ID';
+
+  static const String deviceInfoMAINID = 'MAIN_ID';
+  static const String deviceInfoDEVICEID = 'Device_ID';
+  static const String deviceInfoOSID = 'Os_ID';
   static const String deviceInfoMODEL = 'Model';
-  static const String deviceInfoOSVERSION = 'OS version';
-  static const String deviceInfoOS = 'OS type';
-  static const String deviceInfoDEVICENAME = 'Device name';
+  static const String deviceInfoOSVERSION = 'OS_version';
+  static const String deviceInfoOS = 'OS_type';
+  static const String deviceInfoDEVICENAME = 'Device_name';
   static const String deviceInfoMANUFACTURER = 'Manufacturer';
-  static const String deviceInfoLOGINTIMESTAMP = 'Device login Time';
-  static const String deviceInfoISPHYSICAL = 'Is Physical';
+  static const String deviceInfoLOGINTIMESTAMP = 'Device_login_Time';
+  static const String deviceInfoISPHYSICAL = 'Is_Physical';
 
 }

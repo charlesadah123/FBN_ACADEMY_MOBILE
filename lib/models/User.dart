@@ -9,6 +9,7 @@ class AUser {
   final String password; // Consider using a secure storage solution instead of storing passwords directly
   String? profilePictureUrl;
    Map<dynamic,dynamic>? deviceInfo;
+   String? userToken;
 
   AUser({
     required this.id,
@@ -17,7 +18,8 @@ class AUser {
     required this.phone,
     required this.password,
     required this.profilePictureUrl,
-     this.deviceInfo
+     this.deviceInfo,
+    this.userToken
   });
 
 
@@ -28,7 +30,8 @@ class AUser {
       email: json['email'] ,
       phone: json['phone'] ,
       password: json['password'] ,
-      deviceInfo: json['deviceInfo'] ,
+      deviceInfo: json['deviceInfo'],
+      userToken: json['userToken'],
       profilePictureUrl: json['profilePictureUrl'] ,
     );
   }
@@ -40,6 +43,7 @@ class AUser {
       'email': email,
       'phone': phone,
       'password': password,
+      'userToken': userToken,
       'profilePictureUrl': profilePictureUrl,
       'deviceInfo':deviceInfo
     };

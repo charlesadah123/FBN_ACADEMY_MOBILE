@@ -1,6 +1,7 @@
 import 'package:fbn_academy_mobile/repository/abs/AuthRepo.dart';
 import 'package:fbn_academy_mobile/repository/abs/UserRepo.dart';
 import 'package:fbn_academy_mobile/repository/firebase/AuthFireRepo.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'abs/AuthSv.dart';
 
@@ -12,8 +13,8 @@ class AuthService implements AuthSv{
 
 
   @override
-  Future<void> emailPasswordSignIn(String email, String password) async{
-  await _authRepo.emailPasswordSignIn(email, password);
+  Future<UserCredential?> emailPasswordSignIn(String email, String password) async{
+  return await _authRepo.emailPasswordSignIn(email, password);
   }
 
   @override
@@ -22,7 +23,7 @@ class AuthService implements AuthSv{
   }
 
   @override
-  Future<void> otpAuth(String smsCode) async{
+  Future<UserCredential?> otpAuth(String smsCode) async{
     await _authRepo.otpAuth(smsCode);
   }
 

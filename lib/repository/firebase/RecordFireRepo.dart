@@ -11,13 +11,12 @@ class RecordFireRepo implements RecordRepo {
   User? user=FirebaseAuth.instance.currentUser;
   DatabaseReference db_records= FirebaseDatabase.instance.ref(DbPaths.records);
 
-
   @override
   Future<void> createRecord(AttendanceRecord record) async{
     if( user!= null) {
-      DatabaseReference pushed= await db_records.child(user!.uid).push();
+      DatabaseReference pushed=  db_records.child(user!.uid).push();
       record.id=pushed.key;
-      pushed.set(record.toJson());
+     await  pushed.set(record.toJson());
     //.update(record.toJson());
 
     }
