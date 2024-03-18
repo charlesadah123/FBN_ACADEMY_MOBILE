@@ -68,9 +68,10 @@ class _HomePageState extends State<HomePage> {
           ),
         )
       ),
-        Container(
-          padding: const EdgeInsets.only(top: 25.0),
+     Container(
+          padding: const EdgeInsets.only(top: 50.0),
           child: const Column( 
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 "Automated Attendance",
@@ -80,24 +81,59 @@ class _HomePageState extends State<HomePage> {
               )
              ),
               SizedBox(
-                height: 12,
+                height: 22,
               ),
-              Text(
-                "Efficient attendance tracking system with advanced biometric (Fingerprint) technology.",   
+              Align(
+                alignment: Alignment.center,
+                child: Text(
+                "Efficient attendance tracking system with ",   
                 style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w300,
               )
              ),
-             Row(
-              children: [
-                SizedBox(),
-                SizedBox()
-              ],
-             )
+              ),
+               Align(
+                alignment: Alignment.center,
+                child: Text(
+                "advanced biometric (Fingerprint) technology. ",   
+                style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w300,
+              )
+             ),
+              ),
+              
             ],
           )
-        ), 
+        ),
+      Container(
+        padding: const EdgeInsets.only(top: 75.0),
+        child:  Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            const Text(
+                "Skip",   
+                style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                decoration: TextDecoration.underline,
+              )
+             ),
+             const SizedBox(
+              width: 25
+             ),
+            ElevatedButton(
+              onPressed: (){},
+              child: const Icon(Icons.arrow_right),
+              style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFF0BD2D), 
+              padding: const EdgeInsets.only(top: 20, bottom: 20, left: 25, right: 25),// Hex color code for #F0BD2D
+            ),
+            )
+          ],
+        ),
+      ),
     ]
   );
   }
