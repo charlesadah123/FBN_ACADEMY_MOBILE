@@ -4,6 +4,9 @@ import 'dart:math';
 import 'package:fbn_academy_mobile/common/Constants.dart';
 import 'package:fbn_academy_mobile/models/Record.dart';
 import 'package:fbn_academy_mobile/models/RecordSetting.dart';
+import 'package:fbn_academy_mobile/screens/authentication/OnBoardingScreen.dart';
+import 'package:fbn_academy_mobile/screens/authentication/RegisterScreen.dart';
+import 'package:fbn_academy_mobile/screens/dashboard/DashboardScreen.dart';
 import 'package:fbn_academy_mobile/services/AuthService.dart';
 import 'package:fbn_academy_mobile/services/BiometricService.dart';
 import 'package:fbn_academy_mobile/services/LocationService.dart';
@@ -32,20 +35,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return const GetMaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      debugShowCheckedModeBanner: false,
+      home: OnBoardingScreen()
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
   final String title;
 
   @override

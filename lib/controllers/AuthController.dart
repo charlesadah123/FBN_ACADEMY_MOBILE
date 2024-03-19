@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 
 import '../common/UtilsWidgets.dart';
 import '../models/User.dart';
+import '../screens/authentication/LoginScreen.dart';
+import '../screens/dashboard/DashboardScreen.dart';
 
 class AuthController extends GetxController {
 
@@ -21,8 +23,9 @@ class AuthController extends GetxController {
     loading.value = true;
     UserCredential? credential = await _authService.emailPasswordSignIn(aUser.email, aUser.password);
     if (credential!.user != null) {
+      aUser.password= utilServices.encryptPassword(aUser.password)!;
      await userCtrl.createUser(aUser);
-    //  Get.off(DashboardScreen());
+     Get.off(const DashboardScreen());
     } else {
       print("Error Authenticating user");
     }
@@ -46,7 +49,7 @@ class AuthController extends GetxController {
 
       loading.value = false;
 
-      // Get.off(DashboardScreen());
+       Get.off(const DashboardScreen());
 
     } else {
 
@@ -58,11 +61,10 @@ class AuthController extends GetxController {
   }
 
   Future logOut() async {
-
     loading.value = true;
     await _authService.logOut();
     loading.value = false;
-    //Get.off(LoginScreen());
+    Get.off(const LoginScreen());
   }
 
   Future otpAuth(String phone) async {

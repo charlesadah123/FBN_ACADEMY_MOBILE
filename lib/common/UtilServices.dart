@@ -60,6 +60,21 @@ class UtilServices {
     }
   }
 
+  String? encryptPassword(String password) {
+    if (user != null) {
+
+      // Encrypt the  information
+      Uint8List encryptedBytes = _encrypt(password, MyConstants.encryptionKey2);
+
+      // Convert the encrypted bytes to a hexadecimal string
+      String encryptedHex = _bytesToString(encryptedBytes);
+
+      return encryptedHex;
+    }
+    return null;
+  }
+
+
   String? uniqueUserToken(AUser aUser) {
     if (user != null) {
       // Concatenate user information

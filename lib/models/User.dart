@@ -6,7 +6,7 @@ class AUser {
   final String fullName;
   final String email;
   final String phone;
-  final String password; // Consider using a secure storage solution instead of storing passwords directly
+   String password; // Consider using a secure storage solution instead of storing passwords directly
   String? profilePictureUrl;
    Map<dynamic,dynamic>? deviceInfo;
    String? userToken;

@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
+import '../screens/dashboard/DashboardScreen.dart';
 import '../services/AuthService.dart';
 
 class UtilsWidgets {
+
   static mVerFailed(FirebaseAuthException e) {
     if (e.code == 'invalid-phone-number') {
       showDialog(
@@ -140,7 +142,7 @@ class UtilsWidgets {
                       UserCredential? credential =
                           await authService.otpAuth(smsCode);
                       if (credential!.user != null) {
-                       // Get.off(HomeScreen());
+                       Get.off(const DashboardScreen());
                       } else {
                         print("Error authenticating");
                       }
@@ -162,8 +164,7 @@ class UtilsWidgets {
     );
   }
 
-  static singleDigitWidget(
-      TextEditingController? controller, FocusNode? focusNode) {
+  static singleDigitWidget(TextEditingController? controller, FocusNode? focusNode) {
     return Container(
       width: 36,
       height: 48,
@@ -193,4 +194,47 @@ class UtilsWidgets {
       ),
     );
   }
+
+  static void showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Success"),
+          content: Text("Attendance Marked Successfully"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  static void showErrorDialog(BuildContext context, String errorMessage) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Error"),
+          content: Text(errorMessage),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+
 }
