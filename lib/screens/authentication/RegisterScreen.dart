@@ -1,7 +1,8 @@
+// ignore_for_file: must_be_immutable, file_names
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../common/Constants.dart';
 import '../../controllers/AuthController.dart';
 import '../widgets/FormFields.dart';
 import 'LoginScreen.dart';
@@ -21,25 +22,25 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          body: SingleChildScrollView(
-            child: Container(
-              margin: const EdgeInsets.only(top: 80.0, left: 20.0, right: 20.0),
-              child: Column(
-                children: [
-                  registerHeader(),
-                  const SizedBox(
-                    height: 30.0,
-                  ),
-                  formSection(),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  registerButton(),
-                  logInText(),
-                ],
-              ),
+        body: SingleChildScrollView(
+      child: Container(
+        margin: const EdgeInsets.only(top: 80.0, left: 20.0, right: 20.0),
+        child: Column(
+          children: [
+            registerHeader(),
+            const SizedBox(
+              height: 30.0,
             ),
-          ));
+            formSection(),
+            const SizedBox(
+              height: 20.0,
+            ),
+            registerButton(),
+            logInText(),
+          ],
+        ),
+      ),
+    ));
   }
 
   Widget formSection() {
@@ -135,31 +136,31 @@ class RegisterScreen extends StatelessWidget {
   Widget logInText() {
     return Center(
         child: Padding(
-          padding: const EdgeInsets.only(top: 8.0, bottom: 40.0),
-          child: GestureDetector(
-            onTap: () {
-              Get.off(LoginScreen());
-            },
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Already have an account?',
-                  style: TextStyle(fontSize: 14.0, color: Color(0xFF003B65)),
-                ),
-                SizedBox(
-                  width: 10.0,
-                ),
-                Text(
-                  'Log in',
-                  style: TextStyle(
-                      fontSize: 14.0,
-                      color: Color(0xFFF0BD2D),
-                      fontWeight: FontWeight.w500),
-                )
-              ],
+      padding: const EdgeInsets.only(top: 8.0, bottom: 40.0),
+      child: GestureDetector(
+        onTap: () {
+          Get.off(LoginScreen());
+        },
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Already have an account?',
+              style: TextStyle(fontSize: 14.0, color: Color(0xFF003B65)),
             ),
-          ),
-        ));
+            SizedBox(
+              width: 10.0,
+            ),
+            Text(
+              'Log in',
+              style: TextStyle(
+                  fontSize: 14.0,
+                  color: Color(0xFFF0BD2D),
+                  fontWeight: FontWeight.w500),
+            )
+          ],
+        ),
+      ),
+    ));
   }
 }

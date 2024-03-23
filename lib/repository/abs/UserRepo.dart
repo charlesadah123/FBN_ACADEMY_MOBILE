@@ -1,10 +1,10 @@
+// ignore_for_file: file_names, non_constant_identifier_names
 
 import 'dart:io';
 
 import '../../models/User.dart';
 
 abstract class UserRepo {
-
   // Create a new user
   Future<void> createUser(AUser user);
 

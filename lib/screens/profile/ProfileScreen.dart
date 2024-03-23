@@ -1,7 +1,8 @@
+// ignore_for_file: file_names, prefer_is_empty
+
 import 'dart:io';
 
 import 'package:fbn_academy_mobile/common/Constants.dart';
-import 'package:fbn_academy_mobile/common/UtilsWidgets.dart';
 import 'package:fbn_academy_mobile/controllers/AuthController.dart';
 import 'package:fbn_academy_mobile/controllers/UserController.dart';
 import 'package:flutter/material.dart';
@@ -11,13 +12,11 @@ import 'package:image_picker/image_picker.dart';
 import '../../models/User.dart';
 
 class ProfileScreen extends StatefulWidget {
-
-  ProfileScreen({super.key});
+  const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
-
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final ImagePicker picker = ImagePicker();
@@ -27,15 +26,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-      aUser = userCtrl.aUser;
+    aUser = userCtrl.aUser;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile", style: TextStyle(
-          color: MyStyles.colorPrimary,
-          fontSize: 22,
-          fontWeight: FontWeight.w600,
-        ),),
+        title: Text(
+          "Profile",
+          style: TextStyle(
+            color: MyStyles.colorPrimary,
+            fontSize: 22,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -43,7 +45,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 16,),
+              const SizedBox(
+                height: 16,
+              ),
               Center(
                 child: Stack(
                   children: <Widget>[
@@ -55,22 +59,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       right: 8,
                       child: InkWell(
                         onTap: () async {
-
-                          await picker.pickImage(
+                          await picker
+                              .pickImage(
                             source: ImageSource.gallery,
-                          ).then((value) async {
+                          )
+                              .then((value) async {
                             if (value != null) {
-                              userCtrl.imageUrl.value =
-                              await userCtrl.uploadUserImage(File(value!.path));
-
+                              userCtrl.imageUrl.value = await userCtrl
+                                  .uploadUserImage(File(value.path));
                             }
                           });
                         },
                         child: Container(
                           padding: const EdgeInsets.all(6),
-
-                          decoration: BoxDecoration(color: MyStyles
-                              .colorPrimary, shape: BoxShape.circle),
+                          decoration: BoxDecoration(
+                              color: MyStyles.colorPrimary,
+                              shape: BoxShape.circle),
                           child: Icon(
                             Icons.edit,
                             size: 20,
@@ -82,26 +86,42 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 30,),
+              const SizedBox(
+                height: 30,
+              ),
               Text(
                 'Information',
-                style:
-                TextStyle(color: Colors.grey.shade500,),
+                style: TextStyle(
+                  color: Colors.grey.shade500,
+                ),
               ),
-              const SizedBox(height: 24,),
-              _buildSingleRow(
-                  title: aUser!.fullName, icon: Icons.person),
-              const SizedBox(height: 14,),
-              Divider(),
-              const SizedBox(height: 14,),
+              const SizedBox(
+                height: 24,
+              ),
+              _buildSingleRow(title: aUser!.fullName, icon: Icons.person),
+              const SizedBox(
+                height: 14,
+              ),
+              const Divider(),
+              const SizedBox(
+                height: 14,
+              ),
               _buildSingleRow(title: aUser!.email, icon: Icons.mail),
-              const SizedBox(height: 14,),
-              Divider(),
-              const SizedBox(height: 14,),
+              const SizedBox(
+                height: 14,
+              ),
+              const Divider(),
+              const SizedBox(
+                height: 14,
+              ),
               _buildSingleRow(title: aUser!.phone, icon: Icons.smartphone),
-              const SizedBox(height: 14,),
-              Divider(),
-              const SizedBox(height: 50,),
+              const SizedBox(
+                height: 14,
+              ),
+              const Divider(),
+              const SizedBox(
+                height: 50,
+              ),
               Center(
                 child: TextButton(
                     onPressed: () async {
@@ -128,17 +148,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
+            borderRadius: const BorderRadius.all(Radius.circular(8)),
             color: Colors.grey.shade200,
           ),
-
           child: Icon(
             icon,
             color: MyStyles.colorPrimary.withOpacity(0.7),
             size: 25,
           ),
         ),
-        const SizedBox(width: 16,),
+        const SizedBox(
+          width: 16,
+        ),
         Expanded(
           child: Text(
             title!.capitalizeFirst!,
@@ -147,28 +168,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
               fontSize: 16,
               letterSpacing: 0.5,
             ),
-
           ),
         ),
       ],
     );
   }
 
-  Widget imageAvatar(){
-
+  Widget imageAvatar() {
     return SizedBox(
         width: 140,
         height: 140,
-        child: CircleAvatar(radius: 80,
-          backgroundImage:
-          (userCtrl.imageUrl!.value.length == 0) ?
-          const AssetImage(
-              'assets/images/profileUser.png') as ImageProvider<
-              Object> :
-          NetworkImage(userCtrl.imageUrl!.value),
-        )
-    );
-
+        child: CircleAvatar(
+          radius: 80,
+          backgroundImage: (userCtrl.imageUrl.value.length == 0)
+              ? const AssetImage('assets/images/profileUser.png')
+                  as ImageProvider<Object>
+              : NetworkImage(userCtrl.imageUrl.value),
+        ));
   }
-
 }

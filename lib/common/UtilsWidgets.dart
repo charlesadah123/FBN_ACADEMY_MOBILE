@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, avoid_print, sized_box_for_whitespace
+
 import 'package:fbn_academy_mobile/common/Constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,21 +11,20 @@ import '../screens/dashboard/DashboardScreen.dart';
 import '../services/AuthService.dart';
 
 class UtilsWidgets {
-
   static mVerFailed(FirebaseAuthException e) {
     if (e.code == 'invalid-phone-number') {
       showDialog(
         context: Get.context!,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('Verification Failed'),
-            content: Text('invalid-phone-number'),
+            title: const Text('Verification Failed'),
+            content: const Text('invalid-phone-number'),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
                   Navigator.pop(context); // Close the dialog
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
             ],
           );
@@ -45,7 +46,7 @@ class UtilsWidgets {
               onPressed: () {
                 Navigator.pop(context); // Close the dialog
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -70,33 +71,33 @@ class UtilsWidgets {
     FocusNode? otp5FocusNode = FocusNode();
     FocusNode? otp6FocusNode = FocusNode();
 
-    otp1Controller!.addListener(() {
+    otp1Controller.addListener(() {
       if (otp1Controller.text.isNotEmpty) {
-        otp2FocusNode!.requestFocus();
+        otp2FocusNode.requestFocus();
       }
     });
 
-    otp2Controller!.addListener(() {
-      if (otp2Controller!.text.isNotEmpty) {
-        otp3FocusNode!.requestFocus();
+    otp2Controller.addListener(() {
+      if (otp2Controller.text.isNotEmpty) {
+        otp3FocusNode.requestFocus();
       }
     });
 
-    otp3Controller!.addListener(() {
-      if (otp3Controller!.text.isNotEmpty) {
-        otp4FocusNode!.requestFocus();
+    otp3Controller.addListener(() {
+      if (otp3Controller.text.isNotEmpty) {
+        otp4FocusNode.requestFocus();
       }
     });
 
-    otp4Controller!.addListener(() {
-      if (otp4Controller!.text.isNotEmpty) {
-        otp5FocusNode!.requestFocus();
+    otp4Controller.addListener(() {
+      if (otp4Controller.text.isNotEmpty) {
+        otp5FocusNode.requestFocus();
       }
     });
 
-    otp5Controller!.addListener(() {
-      if (otp5Controller!.text.isNotEmpty) {
-        otp6FocusNode!.requestFocus();
+    otp5Controller.addListener(() {
+      if (otp5Controller.text.isNotEmpty) {
+        otp6FocusNode.requestFocus();
       }
     });
 
@@ -106,7 +107,7 @@ class UtilsWidgets {
         return Form(
           key: otpFormKey,
           child: Container(
-            padding: EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -132,17 +133,17 @@ class UtilsWidgets {
                     var form = otpFormKey.currentState;
 
                     if (form!.validate()) {
-                      String smsCode = otp1Controller!.text.trim() +
-                          otp2Controller!.text.trim() +
-                          otp3Controller!.text.trim() +
-                          otp4Controller!.text.trim() +
-                          otp5Controller!.text.trim() +
-                          otp6Controller!.text.trim();
+                      String smsCode = otp1Controller.text.trim() +
+                          otp2Controller.text.trim() +
+                          otp3Controller.text.trim() +
+                          otp4Controller.text.trim() +
+                          otp5Controller.text.trim() +
+                          otp6Controller.text.trim();
 
                       UserCredential? credential =
                           await authService.otpAuth(smsCode);
                       if (credential!.user != null) {
-                        Get.off(DashboardScreen());
+                        Get.off(const DashboardScreen());
                       } else {
                         print("Error authenticating");
                       }
@@ -150,7 +151,7 @@ class UtilsWidgets {
                       print("Empty state");
                     }
                   },
-                  child: Text(
+                  child: const Text(
                     "Verify",
                     style: TextStyle(color: Colors.white),
                   ),
@@ -164,7 +165,8 @@ class UtilsWidgets {
     );
   }
 
-  static singleDigitWidget(TextEditingController? controller, FocusNode? focusNode) {
+  static singleDigitWidget(
+      TextEditingController? controller, FocusNode? focusNode) {
     return Container(
       width: 36,
       height: 48,
@@ -195,7 +197,7 @@ class UtilsWidgets {
     );
   }
 
-  static  errorSnack(String errorMessage) {
+  static errorSnack(String errorMessage) {
     Get.snackbar(
       'Error',
       errorMessage,
@@ -241,8 +243,7 @@ class UtilsWidgets {
     );
   }
 
-  static successSnack(String text){
-
+  static successSnack(String text) {
     Get.snackbar(
       'Success',
       text,
@@ -253,10 +254,10 @@ class UtilsWidgets {
     );
   }
 
-  static ProgressDialog showProgress(String text, context)  {
+  static ProgressDialog showProgress(String text, context) {
     ProgressDialog pd = ProgressDialog(context: context);
     pd.show(
-      msgFontWeight: FontWeight.w400,
+        msgFontWeight: FontWeight.w400,
         msgTextAlign: TextAlign.start,
         msg: '$text...',
         progressType: ProgressType.normal,
@@ -264,9 +265,7 @@ class UtilsWidgets {
         progressValueColor: MyStyles.colorPrimary.withOpacity(0.7),
         msgColor: MyStyles.colorPrimary,
         valueColor: MyStyles.colorPrimary,
-        progressBgColor: Colors.grey.shade300
-    );
-
+        progressBgColor: Colors.grey.shade300);
 
     return pd;
   }

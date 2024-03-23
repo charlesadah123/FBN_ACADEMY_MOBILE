@@ -1,11 +1,8 @@
+// ignore_for_file: file_names, avoid_print
+
 import 'package:fbn_academy_mobile/common/UtilsWidgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:local_auth/error_codes.dart';
-import 'package:local_auth/local_auth.dart';
 
 import '../abs/AuthRepo.dart';
 
@@ -17,16 +14,17 @@ class AuthFireRepo implements AuthRepo {
   @override
   Future<UserCredential> otpAuth(String smsCode) async {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
-      verificationId: verificationId!,
+      verificationId: verificationId,
       smsCode: smsCode,
     );
 
     // Sign the user in (or link) with the credential
-   return await _handlePhoneSignIn(credential);
+    return await _handlePhoneSignIn(credential);
   }
 
   @override
-  Future<UserCredential?> emailPasswordCreateUser(String email, String password) async {
+  Future<UserCredential?> emailPasswordCreateUser(
+      String email, String password) async {
     try {
       return await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
@@ -41,10 +39,12 @@ class AuthFireRepo implements AuthRepo {
     } catch (e) {
       print(e);
     }
+    return null;
   }
 
   @override
-  Future<UserCredential?> emailPasswordSignIn(String email, String password) async {
+  Future<UserCredential?> emailPasswordSignIn(
+      String email, String password) async {
     try {
       return await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
@@ -59,10 +59,11 @@ class AuthFireRepo implements AuthRepo {
     } catch (e) {
       print(e);
     }
+    return null;
   }
 
-
-  Future<UserCredential> _handlePhoneSignIn(PhoneAuthCredential credential) async {
+  Future<UserCredential> _handlePhoneSignIn(
+      PhoneAuthCredential credential) async {
     return await firebaseAuth.signInWithCredential(credential);
   }
 
@@ -77,19 +78,19 @@ class AuthFireRepo implements AuthRepo {
         this.verificationId = verificationId;
         this.resendToken = resendToken;
       },
-      codeAutoRetrievalTimeout: (String verificationId){},
+      codeAutoRetrievalTimeout: (String verificationId) {},
     );
   }
 
-  Future<UserCredential?> mVerCompleted(PhoneAuthCredential credential) async{
+  Future<UserCredential?> mVerCompleted(PhoneAuthCredential credential) async {
     if (GetPlatform.isAndroid == true) {
-     return await _handlePhoneSignIn(credential);
+      return await _handlePhoneSignIn(credential);
     }
+    return null;
   }
 
   @override
-  Future logOut()async{
+  Future logOut() async {
     await FirebaseAuth.instance.signOut();
   }
-
 }

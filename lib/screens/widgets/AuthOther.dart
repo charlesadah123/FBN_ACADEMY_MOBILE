@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable, file_names
+
 import 'package:fbn_academy_mobile/screens/widgets/FormFields.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,27 +7,27 @@ import 'package:get/get.dart';
 import '../../common/Constants.dart';
 
 class AuthOther extends StatefulWidget {
+  TextEditingController passwordController;
 
-   TextEditingController passwordController;
+  TextEditingController otpController;
 
-   TextEditingController otpController;
-
-  AuthOther({super.key, required this.otpController, required this.passwordController});
+  AuthOther(
+      {super.key,
+      required this.otpController,
+      required this.passwordController});
 
   @override
   State<AuthOther> createState() => _AuthOtherState();
 }
 
 class _AuthOtherState extends State<AuthOther> {
-
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        height: Get.height*0.5,
+        height: Get.height * 0.5,
         padding: const EdgeInsets.all(16),
         child: Form(
           key: formKey,
@@ -50,9 +52,15 @@ class _AuthOtherState extends State<AuthOther> {
                 ),
               ),
               const SizedBox(height: 16),
-              FormFields(formLabel: "Otp Code", formHint: "Enter Otp Code", formController: widget.otpController),
+              FormFields(
+                  formLabel: "Otp Code",
+                  formHint: "Enter Otp Code",
+                  formController: widget.otpController),
               const SizedBox(height: 16),
-              FormFieldPassword(formLabel: "Password", formHint: "Password", formController: widget.passwordController),
+              FormFieldPassword(
+                  formLabel: "Password",
+                  formHint: "Password",
+                  formController: widget.passwordController),
               const SizedBox(height: 16),
               SizedBox(
                 width: double.infinity,
@@ -68,11 +76,14 @@ class _AuthOtherState extends State<AuthOther> {
                     ),
                     backgroundColor: const Color(0xFFF0BD2D),
                   ),
-                  child: Text('Verify', style: TextStyle(
-                    color: MyStyles.colorPrimary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),),
+                  child: Text(
+                    'Verify',
+                    style: TextStyle(
+                      color: MyStyles.colorPrimary,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -82,5 +93,3 @@ class _AuthOtherState extends State<AuthOther> {
     );
   }
 }
-
-

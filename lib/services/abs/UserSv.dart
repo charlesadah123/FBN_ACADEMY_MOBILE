@@ -1,11 +1,11 @@
+// ignore_for_file: file_names
 
 import 'dart:io';
 
 import '../../models/User.dart';
 
 abstract class UserSv {
-
-  Future<void> createUser(AUser aUser) ;
+  Future<void> createUser(AUser aUser);
 
   Future<void> deleteUser(int id);
 
@@ -14,7 +14,4 @@ abstract class UserSv {
   Future<void> updateUser(AUser aUser);
 
   Future<String> uploadUserImage(File imageFile);
-
-
-
 }

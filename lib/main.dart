@@ -1,11 +1,8 @@
-import 'dart:convert';
-import 'dart:math';
+// ignore_for_file: unnecessary_new, avoid_print
 
-import 'package:fbn_academy_mobile/common/Constants.dart';
 import 'package:fbn_academy_mobile/controllers/AuthController.dart';
 import 'package:fbn_academy_mobile/models/Record.dart';
 import 'package:fbn_academy_mobile/screens/authentication/SplashScreen.dart';
-import 'package:fbn_academy_mobile/screens/dashboard/DashboardScreen.dart';
 import 'package:fbn_academy_mobile/services/AuthService.dart';
 import 'package:fbn_academy_mobile/services/BiometricService.dart';
 import 'package:fbn_academy_mobile/services/LocationService.dart';
@@ -19,7 +16,6 @@ import 'package:get/get.dart';
 import 'common/UtilServices.dart';
 import 'controllers/UserController.dart';
 import 'firebase_options.dart';
-import 'models/User.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,8 +23,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-   Get.put(UserController());
-   Get.put(AuthController());
+  Get.put(UserController());
+  Get.put(AuthController());
 
   runApp(const MyApp());
 }
@@ -38,11 +34,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  GetMaterialApp(
-      title: 'Attendance app',
-      debugShowCheckedModeBanner: false,
-      home: SplashScreen() //MyHomePage(title: "Testing",)
-    );
+    return const GetMaterialApp(
+        title: 'Attendance app',
+        debugShowCheckedModeBanner: false,
+        home: SplashScreen() //MyHomePage(title: "Testing",)
+        );
   }
 }
 
@@ -65,13 +61,13 @@ class _MyHomePageState extends State<MyHomePage> {
   UtilServices uServices = UtilServices();
   TextEditingController smsCodeCtrl = new TextEditingController();
 
-  String encrypted="";
+  String encrypted = "";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Test'),
+        title: const Text('User Test'),
       ),
       body: Center(
         child: Column(
@@ -80,7 +76,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Text("Encrypted: $encrypted"),
             ElevatedButton(
               onPressed: _sendOtp,
-              child: Text('Send OTP'),
+              child: const Text('Send OTP'),
             ),
             TextFormField(
               controller: smsCodeCtrl,
@@ -92,23 +88,23 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ElevatedButton(
               onPressed: _verifyOtp,
-              child: Text('Verify OTP'),
+              child: const Text('Verify OTP'),
             ),
             ElevatedButton(
               onPressed: _createUser,
-              child: Text('Create User'),
+              child: const Text('Create User'),
             ),
             ElevatedButton(
               onPressed: _readUser,
-              child: Text('Read User'),
+              child: const Text('Read User'),
             ),
             ElevatedButton(
               onPressed: _updateUser,
-              child: Text('Update User'),
+              child: const Text('Update User'),
             ),
             ElevatedButton(
               onPressed: _deleteUser,
-              child: Text('Delete User'),
+              child: const Text('Delete User'),
             ),
           ],
         ),
@@ -125,12 +121,10 @@ class _MyHomePageState extends State<MyHomePage> {
     await authService.otpAuth(smsCodeCtrl.text.trim());
   }
 
-
   void _createUser() async {
-   setState(() {
-     print("inside set State");
-   });
-
+    setState(() {
+      print("inside set State");
+    });
   }
 
   void _readUser() async {

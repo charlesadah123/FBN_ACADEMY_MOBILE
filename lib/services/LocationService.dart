@@ -1,9 +1,8 @@
+// ignore_for_file: file_names, avoid_print, await_only_futures
+
 import 'package:geolocator/geolocator.dart';
 
-import '../common/Constants.dart';
-
 class LocationService {
-
   Future<Position> determinePosition() async {
     // Check if location services are enabled.
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -32,9 +31,8 @@ class LocationService {
     return position;
   }
 
-
   Future<double> calculateProximity(double lat, double lon) async {
-    Position position= await determinePosition();
+    Position position = await determinePosition();
 
     print("first Lat $lat");
     print("first lon $lon");

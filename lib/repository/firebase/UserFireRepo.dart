@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, non_constant_identifier_names, avoid_print
+
 import 'dart:io';
 
 import 'package:fbn_academy_mobile/common/UtilServices.dart';
@@ -6,9 +8,6 @@ import 'package:fbn_academy_mobile/models/User.dart';
 import 'package:fbn_academy_mobile/repository/abs/UserRepo.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:device_info/device_info.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import '../../common/Constants.dart';
@@ -29,7 +28,7 @@ class UserFireRepo implements UserRepo {
   Future<void> deleteUser(int id) async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      return await _db_users.child(user!.uid).remove();
+      return await _db_users.child(user.uid).remove();
     }
   }
 
@@ -37,23 +36,24 @@ class UserFireRepo implements UserRepo {
   Future<AUser?> getUserById(int id) async {
     User? newUser = FirebaseAuth.instance.currentUser;
     if (newUser != null) {
-      DataSnapshot snapshot = await _db_users.child(newUser!.uid).get();
+      DataSnapshot snapshot = await _db_users.child(newUser.uid).get();
       if (snapshot.value != null) {
         Map<dynamic, dynamic> newPost = snapshot.value as Map<dynamic, dynamic>;
         AUser? a = AUser.fromJson(newPost);
-        print('User data: ${a!.toJsonString()}');
+        print('User data: ${a.toJsonString()}');
         return a;
       } else {
         return null; // User not found
       }
     }
+    return null;
   }
 
   @override
   Future<void> updateUser(AUser aUser) async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      await _db_users.child(user!.uid).update(aUser.toJson());
+      await _db_users.child(user.uid).update(aUser.toJson());
     }
   }
 
@@ -66,9 +66,7 @@ class UserFireRepo implements UserRepo {
     User? user = auth.currentUser;
 
     if (user != null) {
-
       try {
-
         Reference ref = storage.ref().child('profile_images/${user.uid}');
         UploadTask uploadTask = ref.putFile(imageFile);
         TaskSnapshot snapshot = await uploadTask.whenComplete(() => null);
@@ -77,25 +75,18 @@ class UserFireRepo implements UserRepo {
 
         await _db_users.child(user.uid).update({
           'profilePictureUrl': downloadURL,
-
         }).then((value) {
-
           UtilsWidgets.successSnack("Uploaded Successfully");
         });
 
-
         return downloadURL;
-
-
-    }
-    catch (e) {
-        UtilsWidgets.errorSnack( "Failed to upload profile picture.");
+      } catch (e) {
+        UtilsWidgets.errorSnack("Failed to upload profile picture.");
         return "";
       }
-    }
-    else {
-      UtilsWidgets.errorSnack( "User not logged in.");
-    return "";
+    } else {
+      UtilsWidgets.errorSnack("User not logged in.");
+      return "";
     }
   }
 }

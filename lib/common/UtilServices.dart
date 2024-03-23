@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_question_mark, unused_local_variable, unnecessary_null_comparison, file_names, depend_on_referenced_packages, avoid_print, unused_element
+
 import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
@@ -9,13 +11,10 @@ import 'package:crypto/crypto.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../models/Record.dart';
 import '../models/User.dart';
 import 'Constants.dart';
 
 class UtilServices {
-
-
   Future<Map<dynamic, dynamic>?> getdeviceinfo() async {
     Map<dynamic, dynamic?> mapDeviceInfo;
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
@@ -36,8 +35,7 @@ class UtilServices {
         Dbkeys.deviceInfoMANUFACTURER: androidInfo.manufacturer,
         Dbkeys.deviceInfoLOGINTIMESTAMP: DateTime.now().toIso8601String(),
       };
-    }
-    else if (GetPlatform.isIOS == true) {
+    } else if (GetPlatform.isIOS == true) {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
 
       deviceid = iosInfo.systemName + iosInfo.model + iosInfo.systemVersion;
@@ -53,29 +51,28 @@ class UtilServices {
         Dbkeys.deviceInfoLOGINTIMESTAMP: DateTime.now().toIso8601String(),
       };
     }
+    return null;
   }
 
   String? encryptPassword(String password) {
+    print("inside encrypt password");
 
-      print("inside encrypt password");
+    // Encrypt the  information
+    Uint8List encryptedBytes = _encrypt(password, MyConstants.encryptionKey2);
 
-      // Encrypt the  information
-      Uint8List encryptedBytes = _encrypt(password, MyConstants.encryptionKey2);
+    // Convert the encrypted bytes to a hexadecimal string
+    String encryptedHex = _bytesToString(encryptedBytes);
+    print("done encrypting password");
 
-      // Convert the encrypted bytes to a hexadecimal string
-      String encryptedHex = _bytesToString(encryptedBytes);
-      print("done encrypting password");
-
-      return encryptedHex;
-
+    return encryptedHex;
   }
 
   String? uniqueUserToken(AUser aUser) {
-    User? user=FirebaseAuth.instance.currentUser;
+    User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       // Concatenate user information
       String userInfo =
-          "${user!.uid}_${aUser.email}_${aUser.phone}_${aUser.fullName}_${DateTime.now().toIso8601String()}";
+          "${user.uid}_${aUser.email}_${aUser.phone}_${aUser.fullName}_${DateTime.now().toIso8601String()}";
 
       // Encrypt the user information
       Uint8List encryptedBytes = _encrypt(userInfo, MyConstants.encryptionKey1);
@@ -90,15 +87,15 @@ class UtilServices {
 
   Future<String?> uniqueDeviceToken() async {
     Map<dynamic, dynamic>? deviceInfo = await getdeviceinfo();
-    User? user=FirebaseAuth.instance.currentUser;
+    User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       // Concatenate user information
       String device = "${deviceInfo![Dbkeys.deviceInfoMAINID]}_"
-          "${deviceInfo![Dbkeys.deviceInfoDEVICEID]}_"
-          "${deviceInfo![Dbkeys.deviceInfoDEVICENAME]}_"
-          "${deviceInfo![Dbkeys.deviceInfoMODEL]}_"
-          "${deviceInfo![Dbkeys.deviceInfoOSID]}_"
-          "${deviceInfo![Dbkeys.deviceInfoOS]}";
+          "${deviceInfo[Dbkeys.deviceInfoDEVICEID]}_"
+          "${deviceInfo[Dbkeys.deviceInfoDEVICENAME]}_"
+          "${deviceInfo[Dbkeys.deviceInfoMODEL]}_"
+          "${deviceInfo[Dbkeys.deviceInfoOSID]}_"
+          "${deviceInfo[Dbkeys.deviceInfoOS]}";
 
       // Encrypt the user information
       Uint8List encryptedBytes = _encrypt(device, MyConstants.encryptionKey1);
@@ -112,8 +109,9 @@ class UtilServices {
   }
 
   Future<bool> isDeviceTokenUsed(String deviceToken) async {
-    User? user= FirebaseAuth.instance.currentUser;
-    DatabaseReference dbRecords = FirebaseDatabase.instance.ref(DbPaths.records);
+    User? user = FirebaseAuth.instance.currentUser;
+    DatabaseReference dbRecords =
+        FirebaseDatabase.instance.ref(DbPaths.records);
 
     DateTime startTime = DateTime(
       DateTime.now().year,
@@ -134,7 +132,8 @@ class UtilServices {
     );
 
     try {
-      DataSnapshot snapshot = await dbRecords.child(user!.uid)
+      DataSnapshot snapshot = await dbRecords
+          .child(user!.uid)
           .orderByChild('createdAt')
           .startAt(startTime.toIso8601String())
           .endAt(endTime.toIso8601String())
@@ -142,7 +141,7 @@ class UtilServices {
 
       if (snapshot.exists) {
         print("snapshot.exists");
-        Map<dynamic, dynamic> records = snapshot.value as Map<dynamic, dynamic> ;
+        Map<dynamic, dynamic> records = snapshot.value as Map<dynamic, dynamic>;
         if (records != null) {
           // i don't trust this code
           for (var record in records.values) {
@@ -182,14 +181,12 @@ class UtilServices {
     return DateFormat('hh:mm a').format(dateTime);
   }
 
-  static String handleAuthError(e){
-
+  static String handleAuthError(e) {
     String errorMessage = "An error occurred. Please try again later.";
 
     if (e is FirebaseAuthException) {
       // Handle FirebaseAuthException errors
       switch (e.code) {
-
         case 'invalid-email':
           errorMessage = "Invalid email address.";
           break;
@@ -211,19 +208,16 @@ class UtilServices {
         case 'weak-password':
           errorMessage = "The password provided is too weak.";
           break;
-      // Add more cases for handling specific error codes if needed
+        // Add more cases for handling specific error codes if needed
         default:
           errorMessage = "An error occurred. Please try again later.";
       }
-    }
-    else {
+    } else {
       // Handle other types of errors
       print("Error: $e");
     }
 
-
     return errorMessage;
-
   }
 
   static Future<bool> checkInternetConnectivity() async {

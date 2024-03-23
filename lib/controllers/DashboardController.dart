@@ -1,8 +1,9 @@
+// ignore_for_file: invalid_use_of_protected_member, file_names, avoid_print, empty_catches
+
 import 'package:fbn_academy_mobile/common/UtilsWidgets.dart';
 import 'package:fbn_academy_mobile/models/RecordSetting.dart';
 import 'package:fbn_academy_mobile/models/User.dart';
 import 'package:fbn_academy_mobile/services/AuthService.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
@@ -17,7 +18,6 @@ import '../services/BiometricService.dart';
 import '../services/LocationService.dart';
 import '../services/RecordService.dart';
 import '../services/RecordSettingService.dart';
-import '../services/UserService.dart';
 import 'UserController.dart';
 
 class DashboardController extends GetxController {
@@ -45,21 +45,19 @@ class DashboardController extends GetxController {
   }
 
   Future getRecords() async {
-
-      try {
-        dashLoading.value = true;
-        List<AttendanceRecord>? result = await recordService.getAllRecordById(0);
-        if (result != null) {
-          records.value.assignAll(result);
-        }
-        print("done getting records");
-      } catch (e) {
-        print("Error retrieving records");
-      } finally {
-        dashLoading.value = false;
-        print("finally  ${dashLoading.value}");
+    try {
+      dashLoading.value = true;
+      List<AttendanceRecord>? result = await recordService.getAllRecordById(0);
+      if (result != null) {
+        records.value.assignAll(result);
       }
-
+      print("done getting records");
+    } catch (e) {
+      print("Error retrieving records");
+    } finally {
+      dashLoading.value = false;
+      print("finally  ${dashLoading.value}");
+    }
   }
 
   calculateStatistics({Duration? duration}) {
@@ -70,7 +68,7 @@ class DashboardController extends GetxController {
       }
 
       DateTime today = DateTime.now();
-      DateTime startDate = today.subtract(duration!);
+      DateTime startDate = today.subtract(duration);
       int totalDaysPresent = 0;
       int totalDaysAbsent = 0;
       int totalSickLeaveDays = 0;
@@ -123,9 +121,9 @@ class DashboardController extends GetxController {
   }
 
   checkDeviceToken() async {
-    bool isConnected= await UtilServices.checkInternetConnectivity();
+    bool isConnected = await UtilServices.checkInternetConnectivity();
 
-    if(isConnected){
+    if (isConnected) {
       aUser = await userCtrl.getUser(0);
 
       if (aUser != null) {
@@ -143,65 +141,58 @@ class DashboardController extends GetxController {
                 return TakeAttendanceScreen();
               });
         } else {
-          UtilsWidgets.errorSnack( "Attendance Taken Already");
+          UtilsWidgets.errorSnack("Attendance Taken Already");
         }
       }
-    } else{
-      UtilsWidgets.errorSnack( "No Internet Connection");
+    } else {
+      UtilsWidgets.errorSnack("No Internet Connection");
     }
-
   }
 
   takeAttendance(AuthType type) async {
+    bool isConnected = await UtilServices.checkInternetConnectivity();
 
-    bool isConnected= await UtilServices.checkInternetConnectivity();
-
-    if(isConnected){
-
-      ProgressDialog pd=UtilsWidgets.showProgress("Setting Up...", Get.context!);
-
-
+    if (isConnected) {
+      ProgressDialog pd =
+          UtilsWidgets.showProgress("Setting Up...", Get.context!);
 
       try {
         TextEditingController passwordController = TextEditingController();
         TextEditingController otpController = TextEditingController();
 
         pd.close();
-         pd=UtilsWidgets.showProgress("Getting Location", Get.context!);
+        pd = UtilsWidgets.showProgress("Getting Location", Get.context!);
 
-        double distance = await LocationService().calculateProximity(MyConstants.firstAcademyLat, MyConstants.firstAcademyLong);
+        double distance = await LocationService().calculateProximity(
+            MyConstants.firstAcademyLat, MyConstants.firstAcademyLong);
 
         pd.close();
 
-        pd=UtilsWidgets.showProgress("Done with Location", Get.context!);
+        pd = UtilsWidgets.showProgress("Done with Location", Get.context!);
 
         if (distance <= 30) {
-
           if (type == AuthType.biometric) {
-
             pd.close();
 
-            pd=UtilsWidgets.showProgress("Setting up biometric", Get.context!);
+            pd =
+                UtilsWidgets.showProgress("Setting up biometric", Get.context!);
 
             pd.close();
 
             await biometricService.biometricAuth().then((value) {
-
-              pd=UtilsWidgets.showProgress("Creating Attendance Record", Get.context!);
+              pd = UtilsWidgets.showProgress(
+                  "Creating Attendance Record", Get.context!);
 
               _createAttendanceRecord(value);
 
               pd.close();
-
             });
-
           } else {
-            pd=UtilsWidgets.showProgress("Verifying phone", Get.context!);
+            pd = UtilsWidgets.showProgress("Verifying phone", Get.context!);
 
             await authService.verifyPhone(aUser!.phone);
 
             pd.close();
-
 
             String? password;
             String? otpCode;
@@ -219,7 +210,8 @@ class DashboardController extends GetxController {
               otpCode = otpController.text.trim();
 
               if (password!.isNotEmpty || otpCode!.isNotEmpty) {
-                pd=UtilsWidgets.showProgress("Verifying credentials", Get.context!);
+                pd = UtilsWidgets.showProgress(
+                    "Verifying credentials", Get.context!);
                 await authService
                     .authOther(otpCode!, aUser!.email, password!)
                     .then((value) {
@@ -227,28 +219,23 @@ class DashboardController extends GetxController {
                 });
 
                 pd.close();
-
               }
             });
           }
-        }
-        else {
-          UtilsWidgets.errorSnack( "${distance-40} From Academy");
+        } else {
+          UtilsWidgets.errorSnack("${distance - 40} From Academy");
         }
       } catch (e) {
         // show error dialog
         print("Error $e.");
       } finally {
-        if(pd.isOpen()){
+        if (pd.isOpen()) {
           pd.close();
         }
       }
-
+    } else {
+      UtilsWidgets.errorSnack("No Internet Connection");
     }
-    else{
-      UtilsWidgets.errorSnack( "No Internet Connection");
-    }
-
   }
 
   _createAttendanceRecord(bool isAuth) async {
@@ -263,7 +250,7 @@ class DashboardController extends GetxController {
               userId: aUser!.id,
               checkInTime: DateTime.now(),
               isPresent: DateTime.now().isAfter(recordSetting!.stopLateTime),
-              isLate: DateTime.now().isAfter(recordSetting!.startTime),
+              isLate: DateTime.now().isAfter(recordSetting.startTime),
               isSickLeave: false,
               isOtherLeave: false,
               deviceToken: token!,
@@ -272,7 +259,7 @@ class DashboardController extends GetxController {
               createdAt: DateTime.now()))
           .then((value) {
         showModalBottomSheet(
-          isDismissible: false,
+            isDismissible: false,
             isScrollControlled: true,
             context: Get.context!,
             builder: (BuildContext context) {
@@ -280,7 +267,7 @@ class DashboardController extends GetxController {
             });
       });
     } else {
-      UtilsWidgets.errorSnack( "Error Authenticating");
+      UtilsWidgets.errorSnack("Error Authenticating");
     }
   }
 }

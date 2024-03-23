@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import '../../models/Record.dart';
 
 abstract class RecordRepo {

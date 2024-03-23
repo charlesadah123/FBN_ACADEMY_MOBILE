@@ -1,12 +1,12 @@
+// ignore_for_file: file_names, avoid_print, override_on_non_overriding_member
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:local_auth/local_auth.dart';
 
-class BiometricService{
-
+class BiometricService {
   final LocalAuthentication auth = LocalAuthentication();
-    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   @override
   Future<bool> biometricAuth() async {
@@ -14,7 +14,7 @@ class BiometricService{
       bool canCheckBiometrics = await auth.canCheckBiometrics;
       if (canCheckBiometrics) {
         List<BiometricType> availableBiometrics =
-        await auth.getAvailableBiometrics();
+            await auth.getAvailableBiometrics();
 
         if (availableBiometrics.contains(BiometricType.strong)) {
           bool didAuthenticate = await auth.authenticate(
@@ -25,8 +25,7 @@ class BiometricService{
             ), // Prevents the dialog from being dismissed automatically
           );
           return didAuthenticate;
-        }
-        else {
+        } else {
           // Fingerprint not available
           print('Fingerprint not available');
           return false;

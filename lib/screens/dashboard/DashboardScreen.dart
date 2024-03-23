@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member, file_names, prefer_is_empty
+
 import 'package:fbn_academy_mobile/common/UtilServices.dart';
 import 'package:fbn_academy_mobile/common/UtilsWidgets.dart';
 import 'package:fbn_academy_mobile/controllers/DashboardController.dart';
@@ -11,10 +13,9 @@ import '../../models/ChartData.dart';
 import '../profile/ProfileScreen.dart';
 import '../widgets/DurationSelectionWidget.dart';
 import '../widgets/menu.dart';
-import 'TakeAttendanceScreen.dart';
 
 class DashboardScreen extends StatefulWidget {
-  DashboardScreen({super.key});
+  const DashboardScreen({super.key});
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -31,12 +32,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   late int lateness;
   late int otherLeave;
 
-
   @override
   void initState() {
     super.initState();
   }
-
 
   void getStats() {
     var statistics = dashCtrl.statistics.value;
@@ -44,14 +43,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
     present = statistics['totalDaysPresent'] ?? 0;
     absent = statistics['totalDaysAbsent'] ?? 0;
     checkIn = statistics['lastCheckInTime'] != null
-        ? UtilServices.formatDateTime(
-        statistics['lastCheckInTime']!)
+        ? UtilServices.formatDateTime(statistics['lastCheckInTime']!)
         : "None";
     sickLeave = statistics['totalSickLeaveDays'] ?? 0;
     lateness = statistics['totalLatenessDays'] ?? 0;
     otherLeave = statistics['totalOtherLeaveDays'] ?? 0;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +61,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 isScrollControlled: true,
                 context: context,
                 builder: (BuildContext context) {
-                  return Menu();
+                  return const Menu();
                 });
           },
           icon: Icon(
@@ -79,93 +76,89 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Obx(() {
               return GestureDetector(
                 onTap: () {
-                  Get.to(ProfileScreen());
+                  Get.to(const ProfileScreen());
                 },
-                child:
-                SizedBox(
+                child: SizedBox(
                     width: 36,
                     height: 36,
-                    child: CircleAvatar(radius: 30,
-                      backgroundImage:
-                      (userCtrl.imageUrl!.value.length == 0) ?
-                      const AssetImage(
-                          'assets/images/profileUser.png') as ImageProvider<
-                          Object> :
-                      NetworkImage(userCtrl.imageUrl!.value),
-                    )
-                ),
+                    child: CircleAvatar(
+                      radius: 30,
+                      backgroundImage: (userCtrl.imageUrl.value.length == 0)
+                          ? const AssetImage('assets/images/profileUser.png')
+                              as ImageProvider<Object>
+                          : NetworkImage(userCtrl.imageUrl.value),
+                    )),
               );
             }),
           ),
         ],
       ),
       body: Obx(() {
-        return dashCtrl.dashLoading.value ?
-        SizedBox(
-            height: Get.height,
-            child: Center(
-              child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                      MyStyles.colorPrimary)),
-            )
-        ) :
-        SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 19, right: 19, bottom: 24),
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                // this is the attendance & calender widget
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Attendance \nOverview',
-                      style: TextStyle(
-                        color: MyStyles.colorPrimary,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
+        return dashCtrl.dashLoading.value
+            ? SizedBox(
+                height: Get.height,
+                child: Center(
+                  child: CircularProgressIndicator(
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(MyStyles.colorPrimary)),
+                ))
+            : SingleChildScrollView(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(left: 19, right: 19, bottom: 24),
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 20,
                       ),
-                    ),
-                    DurationSelectionWidget(
-                      onDurationSelected: (startDate) {
-                        // Update statistics based on selected start date
-                        dashCtrl.calculateStatistics(duration: startDate);
-                      },
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Obx(() {
-                  getStats();
-                  return Column(
-                    children: <Widget>[
-                      buildAttendanceOverview(),
-                      const SizedBox(height: 20),
-                      buildChart(),
-                      const SizedBox(height: 20),
-                      buildAbsenteeLeaveSection(),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                          width: double.infinity,
-                          child: buildTakeAttendanceButton()),
-                    ],
-                  );
-                }),
+                      // this is the attendance & calender widget
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Attendance \nOverview',
+                            style: TextStyle(
+                              color: MyStyles.colorPrimary,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          DurationSelectionWidget(
+                            onDurationSelected: (startDate) {
+                              // Update statistics based on selected start date
+                              dashCtrl.calculateStatistics(duration: startDate);
+                            },
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Obx(() {
+                        getStats();
+                        return Column(
+                          children: <Widget>[
+                            buildAttendanceOverview(),
+                            const SizedBox(height: 20),
+                            buildChart(),
+                            const SizedBox(height: 20),
+                            buildAbsenteeLeaveSection(),
+                            const SizedBox(height: 10),
+                            SizedBox(
+                                width: double.infinity,
+                                child: buildTakeAttendanceButton()),
+                          ],
+                        );
+                      }),
 
-                const SizedBox(height: 20)
-              ],
-            ),
-          ),
-        );
+                      const SizedBox(height: 20)
+                    ],
+                  ),
+                ),
+              );
       }),
     );
   }
-
 
   Widget buildAttendanceOverview() {
     return Row(
@@ -229,7 +222,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
               const SizedBox(height: 5),
               Text(
-                checkIn ?? 'Not Yet',
+                // checkIn ?? 'Not Yet',
+                checkIn,
                 style: TextStyle(
                   color: MyStyles.colorPrimary,
                   fontSize: 28,
@@ -248,7 +242,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       opacity: 0.50,
       child: Text(
         text,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.black,
           fontSize: 12,
           fontWeight: FontWeight.w400,
@@ -336,7 +330,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-
   Widget myChart(int present, int absent) {
     return Card(
         shape: RoundedRectangleBorder(
@@ -360,8 +353,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  List<DoughnutSeries<ChartData, String>> _getRoundedDoughnutSeries(int present,
-      int absent) {
+  List<DoughnutSeries<ChartData, String>> _getRoundedDoughnutSeries(
+      int present, int absent) {
     final List<ChartData> chartData = <ChartData>[
       ChartData(x: 'Present', y: present),
       ChartData(x: 'Absent', y: absent),
@@ -382,7 +375,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         innerRadius: '80%',
         xValueMapper: (ChartData data, _) => data.x as String,
         yValueMapper: (ChartData data, _) => data.y,
-
       ),
     ];
   }

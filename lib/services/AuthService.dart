@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, file_names
+
 import 'package:fbn_academy_mobile/repository/abs/AuthRepo.dart';
 import 'package:fbn_academy_mobile/repository/abs/UserRepo.dart';
 import 'package:fbn_academy_mobile/repository/firebase/AuthFireRepo.dart';
@@ -30,6 +32,7 @@ class AuthService implements AuthSv {
   @override
   Future<UserCredential?> otpAuth(String smsCode) async {
     await _authRepo.otpAuth(smsCode);
+    return null;
   }
 
   @override

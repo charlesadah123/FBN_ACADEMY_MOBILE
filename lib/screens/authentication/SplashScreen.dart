@@ -1,14 +1,12 @@
+// ignore_for_file: file_names, avoid_unnecessary_containers
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../common/Constants.dart';
 import '../../controllers/splash_controller.dart';
 
 class SplashScreen extends GetView<SplashController> {
-
-
-
   const SplashScreen({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +18,11 @@ class SplashScreen extends GetView<SplashController> {
           return Center(
             child: Container(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center, // Center children vertically
+                mainAxisAlignment:
+                    MainAxisAlignment.center, // Center children vertically
                 children: [
                   ctrl.ilogo,
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     "First Academy Attendance",
                     style: TextStyle(
@@ -36,8 +35,6 @@ class SplashScreen extends GetView<SplashController> {
               ),
             ),
           );
-
-
         },
       ),
     );

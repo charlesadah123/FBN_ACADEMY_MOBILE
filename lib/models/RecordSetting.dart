@@ -1,3 +1,4 @@
+// ignore_for_file: file_names
 
 import 'dart:convert';
 
@@ -11,20 +12,26 @@ class RecordSetting {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-
-  RecordSetting({ required this.id, required this.startTime, required this.stopTime,
-    required this.stopLateTime,required this.lat, required this.lon,required this.createdAt,required this.updatedAt});
+  RecordSetting(
+      {required this.id,
+      required this.startTime,
+      required this.stopTime,
+      required this.stopLateTime,
+      required this.lat,
+      required this.lon,
+      required this.createdAt,
+      required this.updatedAt});
 
   factory RecordSetting.fromJson(Map<dynamic, dynamic> json) {
     return RecordSetting(
-      id: json['id'] ,
+      id: json['id'],
       startTime: DateTime.parse(json['startTime']),
-      stopTime:  DateTime.parse(json['stopTime']),
-      stopLateTime:  DateTime.parse(json['stopLateTime']),
-      lat: json['lat'] ,
-      lon: json['lon'] ,
-      updatedAt:  DateTime.parse(json['updatedAt']),
-      createdAt:DateTime.parse(json['createdAt']),
+      stopTime: DateTime.parse(json['stopTime']),
+      stopLateTime: DateTime.parse(json['stopLateTime']),
+      lat: json['lat'],
+      lon: json['lon'],
+      updatedAt: DateTime.parse(json['updatedAt']),
+      createdAt: DateTime.parse(json['createdAt']),
     );
   }
 
@@ -33,11 +40,11 @@ class RecordSetting {
       'id': id,
       'startTime': startTime.toIso8601String(),
       'stopTime': stopTime.toIso8601String(),
-     'stopLateTime': stopLateTime.toIso8601String(),
+      'stopLateTime': stopLateTime.toIso8601String(),
       'lat': lat,
-      'lon':lon,
+      'lon': lon,
       'updatedAt': updatedAt.toIso8601String(),
-      'createdAt':createdAt.toIso8601String(),
+      'createdAt': createdAt.toIso8601String(),
     };
   }
 

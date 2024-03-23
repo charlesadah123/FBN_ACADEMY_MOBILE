@@ -1,10 +1,11 @@
+// ignore_for_file: sized_box_for_whitespace
+
 import 'package:fbn_academy_mobile/common/Constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../controllers/AuthController.dart';
 import '../../controllers/DashboardController.dart';
-import '../dashboard/TakeAttendanceScreen.dart';
 import '../profile/ProfileScreen.dart';
 
 class Menu extends StatefulWidget {
@@ -33,7 +34,7 @@ class _MenuState extends State<Menu> {
               onTap: () {
                 Navigator.of(context).pop();
               },
-              child:  Icon(
+              child: Icon(
                 Icons.close,
                 color: MyStyles.colorPrimary,
               ),
@@ -47,16 +48,16 @@ class _MenuState extends State<Menu> {
                         await authCtrl.logOut();
                       },
                       child: Text("Log Out",
-                          style:  TextStyle(
+                          style: TextStyle(
                             color: MyStyles.colorPrimary,
                             fontSize: 18,
                             fontWeight: FontWeight.w400,
                           ))),
                   TextButton(
                       onPressed: () async {
-                        Get.to(ProfileScreen());
+                        Get.to(const ProfileScreen());
                       },
-                      child:  Text("My Profile",
+                      child: Text("My Profile",
                           style: TextStyle(
                             color: MyStyles.colorPrimary,
                             fontSize: 18,
@@ -65,7 +66,7 @@ class _MenuState extends State<Menu> {
                   TextButton(
                       onPressed: () {},
                       child: Text("Meet the team",
-                          style:  TextStyle(
+                          style: TextStyle(
                             color: MyStyles.colorPrimary,
                             fontSize: 18,
                             fontWeight: FontWeight.w400,
@@ -85,7 +86,7 @@ class _MenuState extends State<Menu> {
                         ),
                         backgroundColor: MyStyles.colorSecondary,
                       ),
-                      child:  Text(
+                      child: Text(
                         'Take Attendance',
                         style: TextStyle(
                           color: MyStyles.colorPrimary,

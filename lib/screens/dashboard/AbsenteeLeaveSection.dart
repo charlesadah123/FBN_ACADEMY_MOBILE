@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:fbn_academy_mobile/screens/dashboard/FadeIn.dart';
 import 'package:flutter/material.dart';
 
@@ -12,9 +14,9 @@ class AbsenteeLeaveSection extends StatelessWidget {
 
   // Map each reason for absence to its corresponding icon
   static Map<String, Icon> reasonsForAbsence = {
-    'Lateness':  Icon(Icons.alarm, color: MyStyles.colorSecondary),
-    'Sick Leaves':  Icon(Icons.sick_outlined, color: MyStyles.colorSecondary),
-    'Other Leaves':  Icon(Icons.list_alt, color: MyStyles.colorSecondary),
+    'Lateness': Icon(Icons.alarm, color: MyStyles.colorSecondary),
+    'Sick Leaves': Icon(Icons.sick_outlined, color: MyStyles.colorSecondary),
+    'Other Leaves': Icon(Icons.list_alt, color: MyStyles.colorSecondary),
   };
 
   @override
@@ -50,17 +52,21 @@ class AbsenteeLeaveSection extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  SizedBox(width: 20,),
-                                  Container(
-                                      child: reasonIcon),
-                                  SizedBox(width: 10,),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  Container(child: reasonIcon),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
                                   Opacity(
                                     opacity: 0.8,
                                     child: Text(
                                       reasonOfAbsence,
-                                      style:  TextStyle(
+                                      style: TextStyle(
                                         color: MyStyles.colorPrimary,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w700,
@@ -70,12 +76,13 @@ class AbsenteeLeaveSection extends StatelessWidget {
                                 ],
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
                                 child: Opacity(
                                   opacity: 0.4,
                                   child: Text(
                                     daysOfAbsence,
-                                    style:  TextStyle(
+                                    style: TextStyle(
                                       color: MyStyles.colorPrimary,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,

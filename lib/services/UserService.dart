@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'dart:io';
 
 import 'package:fbn_academy_mobile/models/User.dart';
@@ -10,27 +12,27 @@ class UserService implements UserSv {
   UserService([UserRepo? userRepo]) : _userRepo = userRepo ?? UserFireRepo();
 
   @override
-  Future<void> createUser(AUser aUser) async{
+  Future<void> createUser(AUser aUser) async {
     await _userRepo.createUser(aUser);
   }
 
   @override
-  Future<void> deleteUser(int id) async{
+  Future<void> deleteUser(int id) async {
     await _userRepo.deleteUser(id);
   }
 
   @override
-  Future<AUser?> getUserById(int id) async{
+  Future<AUser?> getUserById(int id) async {
     return await _userRepo.getUserById(id);
   }
 
   @override
-  Future<void> updateUser(AUser aUser) async{
+  Future<void> updateUser(AUser aUser) async {
     await _userRepo.updateUser(aUser);
   }
 
   @override
-  Future<String> uploadUserImage(File imageFile) async{
+  Future<String> uploadUserImage(File imageFile) async {
     return await _userRepo.uploadUserImage(imageFile);
   }
 }

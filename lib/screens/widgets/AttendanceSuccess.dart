@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, sized_box_for_whitespace
+
 import 'package:fbn_academy_mobile/screens/dashboard/DashboardScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -21,7 +23,8 @@ class _AttendanceSuccessState extends State<AttendanceSuccess> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 20), // Adjusted height or remove if not needed
+            const SizedBox(
+                height: 20), // Adjusted height or remove if not needed
             Column(
               children: [
                 Stack(
@@ -48,7 +51,8 @@ class _AttendanceSuccessState extends State<AttendanceSuccess> {
                     Positioned(
                       top: 100,
                       child: Container(
-                        decoration: BoxDecoration(color: Colors.transparent),
+                        decoration:
+                            const BoxDecoration(color: Colors.transparent),
                         child: Icon(
                           Icons.task_alt_outlined,
                           color: Colors.yellow[700],
@@ -58,29 +62,32 @@ class _AttendanceSuccessState extends State<AttendanceSuccess> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 12), // Adjusted height or remove if not needed
+                const SizedBox(
+                    height: 12), // Adjusted height or remove if not needed
                 const Text(
                   "Attendance Marked Successfully",
-                  style: TextStyle(color: Color(0xFF003B65), fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                      color: Color(0xFF003B65), fontWeight: FontWeight.w500),
                 ),
-                const SizedBox(height: 40), // Adjusted height or remove if not needed
+                const SizedBox(
+                    height: 40), // Adjusted height or remove if not needed
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () async{
-                     DashboardController dash= Get.find<DashboardController>();
+                    onPressed: () async {
+                      DashboardController dash =
+                          Get.find<DashboardController>();
 
-                     await dash.getRecords();
-                     await dash.calculateStatistics();
+                      await dash.getRecords();
+                      await dash.calculateStatistics();
 
-                      Get.offAll(DashboardScreen());
-
-                      },
+                      Get.offAll(const DashboardScreen());
+                    },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(32),
                       ),
-                      backgroundColor: Color(0xFF003B65),
+                      backgroundColor: const Color(0xFF003B65),
                     ),
                     child: const Text(
                       'Go To Dashboard',
@@ -92,13 +99,13 @@ class _AttendanceSuccessState extends State<AttendanceSuccess> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10), // Adjusted height or remove if not needed
+                const SizedBox(
+                    height: 10), // Adjusted height or remove if not needed
               ],
             ),
           ],
         ),
       ),
     );
-
   }
 }

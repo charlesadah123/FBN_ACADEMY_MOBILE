@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:fbn_academy_mobile/models/Record.dart';
 import 'package:fbn_academy_mobile/repository/abs/RecordRepo.dart';
 import 'package:fbn_academy_mobile/repository/firebase/RecordFireRepo.dart';
@@ -21,12 +23,13 @@ class RecordService implements RecordSv {
 
   @override
   Future<List<AttendanceRecord>?> getAllRecordById(int id) async {
-   return await _recordRepo.getAllRecordById(id);
+    return await _recordRepo.getAllRecordById(id);
   }
 
   @override
   Future<AttendanceRecord?> getRecordById(int id) async {
     await _recordRepo.getRecordById(id);
+    return null;
   }
 
   @override

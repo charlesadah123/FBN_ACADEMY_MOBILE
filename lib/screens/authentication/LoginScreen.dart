@@ -1,5 +1,6 @@
+// ignore_for_file: must_be_immutable, file_names, avoid_print, override_on_non_overriding_member
+
 import 'package:fbn_academy_mobile/screens/authentication/RegisterScreen.dart';
-import 'package:fbn_academy_mobile/screens/dashboard/DashboardScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -61,7 +62,7 @@ class LoginScreen extends StatelessWidget {
               )),
         ),
         Padding(
-          padding: EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(10.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -109,7 +110,8 @@ class LoginScreen extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () async {
               if (formKey.currentState!.validate()) {
-                await authCtrl.signIn(emailCtrl.text.trim(), passwordCtrl.text.trim());
+                await authCtrl.signIn(
+                    emailCtrl.text.trim(), passwordCtrl.text.trim());
               }
             },
             style: ElevatedButton.styleFrom(
