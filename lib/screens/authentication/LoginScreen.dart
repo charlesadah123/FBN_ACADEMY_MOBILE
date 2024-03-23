@@ -1,11 +1,19 @@
 import 'package:fbn_academy_mobile/screens/authentication/RegisterScreen.dart';
+import 'package:fbn_academy_mobile/screens/dashboard/DashboardScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../common/Constants.dart';
+import '../../controllers/AuthController.dart';
 import '../widgets/FormFields.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  AuthController authCtrl = Get.find();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  TextEditingController emailCtrl = TextEditingController();
+  TextEditingController passwordCtrl = TextEditingController();
+
+  LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +41,6 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(
               height: 10.0,
             ),
-
           ],
         ),
       ),
@@ -41,13 +48,13 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget loginHeader() {
-    return const Column(
+    return Column(
       children: [
         Center(
           child: Text('Login',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Color(0xFF003B65),
+                color: MyStyles.colorPrimary,
                 fontSize: 40,
                 fontWeight: FontWeight.w600,
                 height: 0,
@@ -60,7 +67,7 @@ class LoginScreen extends StatelessWidget {
             children: [
               Text('Welcome back',
                   style: TextStyle(
-                    color: Color(0xFF162D4C),
+                    color: MyStyles.colorPrimary,
                     fontSize: 14,
                     fontWeight: FontWeight.w400,
                     height: 0.12,
@@ -75,12 +82,21 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget formSection() {
-    return const Column(
-      children: [
-        FormFields(formLabel: 'Email*', formHint: 'abc@xyz.com'),
-        FormFieldPassword(
-            formLabel: 'Password*', formHint: 'Enter your password')
-      ],
+    return Form(
+      key: formKey,
+      child: Column(
+        children: [
+          FormFields(
+              formLabel: 'Email*',
+              formHint: 'abc@xyz.com',
+              formController: emailCtrl),
+          FormFieldPassword(
+            formLabel: 'Password*',
+            formHint: 'Enter your password',
+            formController: passwordCtrl,
+          )
+        ],
+      ),
     );
   }
 
@@ -91,21 +107,21 @@ class LoginScreen extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
           width: double.infinity,
           child: ElevatedButton(
-            onPressed: () {
-
-                Get.off(const LoginScreen());
-
+            onPressed: () async {
+              if (formKey.currentState!.validate()) {
+                await authCtrl.signIn(emailCtrl.text.trim(), passwordCtrl.text.trim());
+              }
             },
             style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(32.0)),
-                backgroundColor: const Color(0xFFF0BD2D),
+                backgroundColor: MyStyles.colorSecondary,
                 minimumSize: const Size(45.0, 45.0)),
-            child: const Text(
+            child: Text(
               'Log in',
               style: TextStyle(
                 fontSize: 14.0,
-                color: Color(0xFF162D4C),
+                color: MyStyles.colorPrimary,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -114,8 +130,8 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget newHere() {
-    return  GestureDetector(
-      onTap: (){
+    return GestureDetector(
+      onTap: () {
         Get.off(RegisterScreen());
       },
       child: Center(
@@ -126,17 +142,17 @@ class LoginScreen extends StatelessWidget {
               "New here?",
               style: TextStyle(
                   fontSize: 14.0,
-                  color: Color(0xFF162D4C),
+                  color: MyStyles.colorPrimary,
                   fontWeight: FontWeight.w500),
             ),
-            SizedBox(
+            const SizedBox(
               width: 5.0,
             ),
             Text(
               'Create an account',
               style: TextStyle(
                   fontSize: 14.0,
-                  color: Color(0xFFF0BD2D),
+                  color: MyStyles.colorSecondary,
                   fontWeight: FontWeight.w500),
             )
           ],
@@ -146,17 +162,15 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget forgotPassword() {
-    return   GestureDetector(
-      onTap: (){
+    return GestureDetector(
+      onTap: () {
         print("forgot password clicked");
       },
-      child: const Text('Forgot Password?',
-                style: TextStyle(
-
-                    fontSize: 14.0,
-                    color: Color(0xFF162D4C),
-                    decoration: TextDecoration.underline)),
+      child: Text('Forgot Password?',
+          style: TextStyle(
+              fontSize: 14.0,
+              color: MyStyles.colorPrimary,
+              decoration: TextDecoration.underline)),
     );
-
   }
 }

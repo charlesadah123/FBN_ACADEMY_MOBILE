@@ -2,7 +2,10 @@
 class Assets {
   Assets._();
 
+  static const String imagesFbnLogo = 'assets/images/fbn_logo.svg';
   static const String imagesFingerprint = 'assets/images/fingerprint.png';
+  static const String imagesLogo = 'assets/images/logo.png';
+  static const String imagesProfileUser = 'assets/images/profileUser.png';
   static const String imagesUser = 'assets/images/user.png';
 
 }

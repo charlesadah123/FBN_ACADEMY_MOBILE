@@ -36,6 +36,11 @@ class LocationService {
   Future<double> calculateProximity(double lat, double lon) async {
     Position position= await determinePosition();
 
+    print("first Lat $lat");
+    print("first lon $lon");
+    print("current Lat ${position.latitude}");
+    print("current lon ${position.longitude}");
+
     return await Geolocator.distanceBetween(
       position.latitude,
       position.longitude,

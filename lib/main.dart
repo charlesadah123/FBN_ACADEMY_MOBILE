@@ -2,10 +2,9 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:fbn_academy_mobile/common/Constants.dart';
+import 'package:fbn_academy_mobile/controllers/AuthController.dart';
 import 'package:fbn_academy_mobile/models/Record.dart';
-import 'package:fbn_academy_mobile/models/RecordSetting.dart';
-import 'package:fbn_academy_mobile/screens/authentication/OnBoardingScreen.dart';
-import 'package:fbn_academy_mobile/screens/authentication/RegisterScreen.dart';
+import 'package:fbn_academy_mobile/screens/authentication/SplashScreen.dart';
 import 'package:fbn_academy_mobile/screens/dashboard/DashboardScreen.dart';
 import 'package:fbn_academy_mobile/services/AuthService.dart';
 import 'package:fbn_academy_mobile/services/BiometricService.dart';
@@ -18,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'common/UtilServices.dart';
+import 'controllers/UserController.dart';
 import 'firebase_options.dart';
 import 'models/User.dart';
 
@@ -26,19 +26,22 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+   Get.put(UserController());
+   Get.put(AuthController());
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
-      title: 'Flutter Demo',
+    return  GetMaterialApp(
+      title: 'Attendance app',
       debugShowCheckedModeBanner: false,
-      home: OnBoardingScreen()
+      home: SplashScreen() //MyHomePage(title: "Testing",)
     );
   }
 }
@@ -62,6 +65,8 @@ class _MyHomePageState extends State<MyHomePage> {
   UtilServices uServices = UtilServices();
   TextEditingController smsCodeCtrl = new TextEditingController();
 
+  String encrypted="";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,6 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Text("Encrypted: $encrypted"),
             ElevatedButton(
               onPressed: _sendOtp,
               child: Text('Send OTP'),
@@ -121,12 +127,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
   void _createUser() async {
-    // Replace these values with the actual user data you want to create
-    if (authFire.currentUser != null) {
-    }
-    else {
-      print("firebase user is null");
-    }
+   setState(() {
+     print("inside set State");
+   });
+
   }
 
   void _readUser() async {

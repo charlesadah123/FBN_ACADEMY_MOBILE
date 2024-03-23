@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import '../../models/User.dart';
 
 abstract class UserSv {
@@ -10,5 +12,9 @@ abstract class UserSv {
   Future<AUser?> getUserById(int id);
 
   Future<void> updateUser(AUser aUser);
+
+  Future<String> uploadUserImage(File imageFile);
+
+
 
 }

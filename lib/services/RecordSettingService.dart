@@ -27,7 +27,7 @@ class RecordSettingService implements RecordSettingSv {
 
   @override
   Future<RecordSetting?> getRecordSetting() async {
-    await _RecordSettingRepo.getRecordSetting();
+    return await _RecordSettingRepo.getRecordSetting();
   }
 
   @override

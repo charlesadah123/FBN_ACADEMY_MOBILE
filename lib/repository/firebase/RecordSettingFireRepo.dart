@@ -31,9 +31,10 @@ class RecordSettingFireRepo implements RecordSettingRepo {
   Future<RecordSetting?> getRecordSetting() async{
 
     if(user !=null){
-      DataSnapshot snapshot = await db_RecordSettings.get();
-      RecordSetting rec = RecordSetting.fromJson(snapshot as Map<dynamic, dynamic>);
+      DataSnapshot snapshot = await db_RecordSettings.child("first").get();
 
+      RecordSetting rec = RecordSetting.fromJson(snapshot.value as Map<dynamic, dynamic>);
+      print("rec ${rec.toJsonString()}");
       return rec;
     }
 

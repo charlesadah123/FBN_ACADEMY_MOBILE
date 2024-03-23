@@ -2,6 +2,8 @@ import 'package:fbn_academy_mobile/screens/dashboard/DashboardScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../controllers/DashboardController.dart';
+
 class AttendanceSuccess extends StatefulWidget {
   const AttendanceSuccess({super.key});
 
@@ -65,10 +67,15 @@ class _AttendanceSuccessState extends State<AttendanceSuccess> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      Get.to(DashboardScreen());
-                    },
+                    onPressed: () async{
+                     DashboardController dash= Get.find<DashboardController>();
+
+                     await dash.getRecords();
+                     await dash.calculateStatistics();
+
+                      Get.offAll(DashboardScreen());
+
+                      },
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(32),

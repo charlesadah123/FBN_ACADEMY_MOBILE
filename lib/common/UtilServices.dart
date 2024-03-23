@@ -2,32 +2,26 @@ import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info/device_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:crypto/crypto.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../models/Record.dart';
 import '../models/User.dart';
 import 'Constants.dart';
 
 class UtilServices {
-  FirebaseAuth auth = FirebaseAuth.instance;
-  User? user;
 
-  utilServices() {
-    getFireUser();
-  }
-
-  void getFireUser() {
-    user = auth.currentUser;
-  }
 
   Future<Map<dynamic, dynamic>?> getdeviceinfo() async {
     Map<dynamic, dynamic?> mapDeviceInfo;
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     String? deviceid;
 
+    print("Inside getdeviceinfo");
     if (GetPlatform.isAndroid == true) {
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
       deviceid = androidInfo.id + androidInfo.androidId;
@@ -42,7 +36,8 @@ class UtilServices {
         Dbkeys.deviceInfoMANUFACTURER: androidInfo.manufacturer,
         Dbkeys.deviceInfoLOGINTIMESTAMP: DateTime.now().toIso8601String(),
       };
-    } else if (GetPlatform.isIOS == true) {
+    }
+    else if (GetPlatform.isIOS == true) {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
 
       deviceid = iosInfo.systemName + iosInfo.model + iosInfo.systemVersion;
@@ -61,21 +56,22 @@ class UtilServices {
   }
 
   String? encryptPassword(String password) {
-    if (user != null) {
+
+      print("inside encrypt password");
 
       // Encrypt the  information
       Uint8List encryptedBytes = _encrypt(password, MyConstants.encryptionKey2);
 
       // Convert the encrypted bytes to a hexadecimal string
       String encryptedHex = _bytesToString(encryptedBytes);
+      print("done encrypting password");
 
       return encryptedHex;
-    }
-    return null;
+
   }
 
-
   String? uniqueUserToken(AUser aUser) {
+    User? user=FirebaseAuth.instance.currentUser;
     if (user != null) {
       // Concatenate user information
       String userInfo =
@@ -94,7 +90,7 @@ class UtilServices {
 
   Future<String?> uniqueDeviceToken() async {
     Map<dynamic, dynamic>? deviceInfo = await getdeviceinfo();
-
+    User? user=FirebaseAuth.instance.currentUser;
     if (user != null) {
       // Concatenate user information
       String device = "${deviceInfo![Dbkeys.deviceInfoMAINID]}_"
@@ -116,6 +112,7 @@ class UtilServices {
   }
 
   Future<bool> isDeviceTokenUsed(String deviceToken) async {
+    User? user= FirebaseAuth.instance.currentUser;
     DatabaseReference dbRecords = FirebaseDatabase.instance.ref(DbPaths.records);
 
     DateTime startTime = DateTime(
@@ -137,13 +134,14 @@ class UtilServices {
     );
 
     try {
-      DataSnapshot snapshot = await dbRecords
+      DataSnapshot snapshot = await dbRecords.child(user!.uid)
           .orderByChild('createdAt')
           .startAt(startTime.toIso8601String())
           .endAt(endTime.toIso8601String())
           .get();
 
       if (snapshot.exists) {
+        print("snapshot.exists");
         Map<dynamic, dynamic> records = snapshot.value as Map<dynamic, dynamic> ;
         if (records != null) {
           // i don't trust this code
@@ -180,4 +178,60 @@ class UtilServices {
     return base64UrlEncode(keyBytes);
   }
 
+  static String formatDateTime(DateTime dateTime) {
+    return DateFormat('hh:mm a').format(dateTime);
+  }
+
+  static String handleAuthError(e){
+
+    String errorMessage = "An error occurred. Please try again later.";
+
+    if (e is FirebaseAuthException) {
+      // Handle FirebaseAuthException errors
+      switch (e.code) {
+
+        case 'invalid-email':
+          errorMessage = "Invalid email address.";
+          break;
+        case 'user-disabled':
+          errorMessage = "User account has been disabled.";
+          break;
+        case 'user-not-found':
+          errorMessage = "User not found. Please register first.";
+          break;
+        case 'wrong-password':
+          errorMessage = "Incorrect password.";
+          break;
+        case 'email-already-in-use':
+          errorMessage = "The email address is already in use.";
+          break;
+        case 'operation-not-allowed':
+          errorMessage = "Email/password accounts are not enabled.";
+          break;
+        case 'weak-password':
+          errorMessage = "The password provided is too weak.";
+          break;
+      // Add more cases for handling specific error codes if needed
+        default:
+          errorMessage = "An error occurred. Please try again later.";
+      }
+    }
+    else {
+      // Handle other types of errors
+      print("Error: $e");
+    }
+
+
+    return errorMessage;
+
+  }
+
+  static Future<bool> checkInternetConnectivity() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      return false; // No internet connectionJHY
+    } else {
+      return true; // Internet connection available
+    }
+  }
 }

@@ -1,7 +1,9 @@
+import 'package:fbn_academy_mobile/common/Constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
 
 import '../screens/dashboard/DashboardScreen.dart';
 import '../services/AuthService.dart';
@@ -35,8 +37,8 @@ class UtilsWidgets {
       context: Get.context!,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Timeout', style: TextStyle(fontSize: 20,
-              fontWeight: FontWeight.w600)),
+          title: const Text('Timeout',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
           content: const Text('Verification code auto-retrieval timed out.'),
           actions: <Widget>[
             TextButton(
@@ -52,7 +54,6 @@ class UtilsWidgets {
   }
 
   static verifyCodeBottomSheet(AuthService authService) async {
-
     final otpFormKey = GlobalKey<FormState>();
 
     TextEditingController? otp1Controller = TextEditingController();
@@ -70,7 +71,7 @@ class UtilsWidgets {
     FocusNode? otp6FocusNode = FocusNode();
 
     otp1Controller!.addListener(() {
-      if (otp1Controller!.text.isNotEmpty) {
+      if (otp1Controller.text.isNotEmpty) {
         otp2FocusNode!.requestFocus();
       }
     });
@@ -111,8 +112,7 @@ class UtilsWidgets {
               children: <Widget>[
                 const Text(
                   "Verify Otp",
-                  style: TextStyle(fontSize: 20,
-                      fontWeight: FontWeight.w600),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 20),
                 Row(
@@ -142,7 +142,7 @@ class UtilsWidgets {
                       UserCredential? credential =
                           await authService.otpAuth(smsCode);
                       if (credential!.user != null) {
-                       Get.off(const DashboardScreen());
+                        Get.off(DashboardScreen());
                       } else {
                         print("Error authenticating");
                       }
@@ -195,46 +195,79 @@ class UtilsWidgets {
     );
   }
 
-  static void showSuccessDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Success"),
-          content: Text("Attendance Marked Successfully"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text("OK"),
-            ),
-          ],
-        );
-      },
+  static  errorSnack(String errorMessage) {
+    Get.snackbar(
+      'Error',
+      errorMessage,
+      backgroundColor: Colors.red,
+      colorText: Colors.white,
+      snackPosition: SnackPosition.TOP,
+      duration: const Duration(seconds: 3),
     );
   }
 
-  static void showErrorDialog(BuildContext context, String errorMessage) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Error"),
-          content: Text(errorMessage),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text("OK"),
+  static Widget checkedBadge() {
+    return Container(
+      width: 34,
+      height: 33,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Positioned(
+            child: Container(
+              width: 25,
+              height: 25,
+              decoration: ShapeDecoration(
+                color: const Color(0x0FF0BD2D),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(2)),
+              ),
             ),
-          ],
-        );
-      },
+          ),
+          Positioned(
+            left: 8,
+            top: 8,
+            child: Container(
+                width: 12,
+                height: 12,
+                child: Icon(
+                  Icons.task_alt_outlined,
+                  color: Colors.yellow[700],
+                  size: 18,
+                )),
+          ),
+        ],
+      ),
     );
   }
 
+  static successSnack(String text){
+
+    Get.snackbar(
+      'Success',
+      text,
+      backgroundColor: Colors.green,
+      colorText: Colors.white,
+      snackPosition: SnackPosition.TOP,
+      duration: const Duration(seconds: 3),
+    );
+  }
+
+  static ProgressDialog showProgress(String text, context)  {
+    ProgressDialog pd = ProgressDialog(context: context);
+    pd.show(
+      msgFontWeight: FontWeight.w400,
+        msgTextAlign: TextAlign.start,
+        msg: '$text...',
+        progressType: ProgressType.normal,
+        backgroundColor: Colors.white,
+        progressValueColor: MyStyles.colorPrimary.withOpacity(0.7),
+        msgColor: MyStyles.colorPrimary,
+        valueColor: MyStyles.colorPrimary,
+        progressBgColor: Colors.grey.shade300
+    );
 
 
+    return pd;
+  }
 }

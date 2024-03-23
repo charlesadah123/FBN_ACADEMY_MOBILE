@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fbn_academy_mobile/models/User.dart';
 import 'package:fbn_academy_mobile/repository/abs/UserRepo.dart';
 import 'package:fbn_academy_mobile/repository/firebase/UserFireRepo.dart';
@@ -25,5 +27,10 @@ class UserService implements UserSv {
   @override
   Future<void> updateUser(AUser aUser) async{
     await _userRepo.updateUser(aUser);
+  }
+
+  @override
+  Future<String> uploadUserImage(File imageFile) async{
+    return await _userRepo.uploadUserImage(imageFile);
   }
 }

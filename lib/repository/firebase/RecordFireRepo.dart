@@ -51,8 +51,9 @@ class RecordFireRepo implements RecordRepo {
       return recordList;
 
     }
-
   }
+
+
 
   @override
   Future<AttendanceRecord?> getRecordById(int id) async{

@@ -8,6 +8,10 @@ abstract class AuthSv{
 
   Future<UserCredential?> emailPasswordSignIn(String email, String password);
 
+  Future<UserCredential?> emailPasswordCreateUser(String email, String password);
+
+  Future<bool> authOther(String sms, String email, String password );
+
   Future logOut();
 
 }

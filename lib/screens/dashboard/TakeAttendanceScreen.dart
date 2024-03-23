@@ -1,17 +1,32 @@
 // ignore_for_file: file_names
 
+import 'package:fbn_academy_mobile/common/Constants.dart';
+import 'package:fbn_academy_mobile/controllers/DashboardController.dart';
 import 'package:fbn_academy_mobile/screens/widgets/AttendanceSuccess.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class TakeAttendanceScreen extends StatelessWidget {
-   const TakeAttendanceScreen({super.key});
+
+  TakeAttendanceScreen({super.key});
+
+  DashboardController dashCtrl = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: Get.height * 0.4,
+    return Obx(() {
+       return  dashCtrl.dashLoading.value ?
+      SizedBox(
+          height: Get.height * 0.4,
+          child: Center(
+            child: CircularProgressIndicator(semanticsLabel:dashCtrl.currentTask.value,valueColor: AlwaysStoppedAnimation<Color>(MyStyles.colorPrimary)),
+          )
+      ) :Container(
+
+        width: double.infinity,
+
+        height: Get.height * 0.4,
+
         child: Padding(
           padding: const EdgeInsets.only(
             left: 24,
@@ -76,15 +91,9 @@ class TakeAttendanceScreen extends StatelessWidget {
                 ),
                 padding: const EdgeInsets.only(),
                 child: ElevatedButton(
-                  onPressed: () => {
-
-                    showModalBottomSheet(
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AttendanceSuccess();
-                        })
-
+                  onPressed: () async {
+                    await dashCtrl.takeAttendance(AuthType.otp_password);
+                    Navigator.of(context).pop();
                   },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -128,14 +137,11 @@ class TakeAttendanceScreen extends StatelessWidget {
                 ),
                 padding: const EdgeInsets.only(),
                 child: ElevatedButton(
-                  onPressed: () => {
-
-
-
-
+                  onPressed: () async {
+                    await dashCtrl.takeAttendance(AuthType.biometric);
 
                     // Close the bottom sheet
-                    Navigator.of(context).pop()
+                    Navigator.of(context).pop();
                   },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
@@ -166,6 +172,7 @@ class TakeAttendanceScreen extends StatelessWidget {
             ],
           ),
         ),
-    );
+      );
+    });
   }
 }

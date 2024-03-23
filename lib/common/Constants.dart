@@ -1,7 +1,13 @@
+import 'package:flutter/material.dart';
+
 class MyConstants{
+
 
   static double firstAcademyLong=3.36125255460304;
   static double firstAcademyLat=6.481096177043414;
+
+
+
   static String encryptionKey1 = "ZGRgMOnXZHCP7tf0m6SCwbmZfT5XpZrXG_c7jyHovCY=";
   static String encryptionKey2 = "C5scNNiglRAF-b-EjmqH7XfbewEGxkXzF2n7fRbab-0=";
 }
@@ -25,4 +31,16 @@ class Dbkeys {
   static const String deviceInfoLOGINTIMESTAMP = 'Device_login_Time';
   static const String deviceInfoISPHYSICAL = 'Is_Physical';
 
+}
+
+class MyStyles{
+
+  static Color colorPrimary= const Color(0xFF003B65);
+  static Color colorSecondary=  const Color(0xFFF0BD2D);
+
+}
+
+enum AuthType{
+ otp_password,
+ biometric
 }

@@ -26,7 +26,7 @@ class AuthFireRepo implements AuthRepo {
   }
 
   @override
-  Future<UserCredential?> emailPasswordSignIn(String email, String password) async {
+  Future<UserCredential?> emailPasswordCreateUser(String email, String password) async {
     try {
       return await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
@@ -43,6 +43,25 @@ class AuthFireRepo implements AuthRepo {
     }
   }
 
+  @override
+  Future<UserCredential?> emailPasswordSignIn(String email, String password) async {
+    try {
+      return await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
   Future<UserCredential> _handlePhoneSignIn(PhoneAuthCredential credential) async {
     return await firebaseAuth.signInWithCredential(credential);
   }
@@ -58,7 +77,7 @@ class AuthFireRepo implements AuthRepo {
         this.verificationId = verificationId;
         this.resendToken = resendToken;
       },
-      codeAutoRetrievalTimeout: UtilsWidgets.mCodeAutoRetrievalTimeout,
+      codeAutoRetrievalTimeout: (String verificationId){},
     );
   }
 
@@ -70,9 +89,7 @@ class AuthFireRepo implements AuthRepo {
 
   @override
   Future logOut()async{
-
     await FirebaseAuth.instance.signOut();
-
   }
 
 }
