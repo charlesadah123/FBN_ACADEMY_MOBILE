@@ -1,7 +1,9 @@
+import 'package:fbn_academy_mobile/common/Constants.dart';
 import 'package:fbn_academy_mobile/common/UtilServices.dart';
 import 'package:fbn_academy_mobile/controllers/UserController.dart';
 import 'package:fbn_academy_mobile/services/AuthService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
 
@@ -49,7 +51,9 @@ class AuthController extends GetxController {
               email: email,
               phone: phone,
               password: password,
-              profilePictureUrl: ""
+              profilePictureUrl: "",
+              createdAt: DateTime.now() ,
+            updatedAt: DateTime.now()
           );
 
           aUser.password=  utilServices.encryptPassword(aUser.password)!;
@@ -70,8 +74,6 @@ class AuthController extends GetxController {
         else {
           pd.close();
           print("Error Authenticating user");
-
-
         }
       }catch( e){
 
@@ -80,7 +82,6 @@ class AuthController extends GetxController {
       }finally{
         pd.close();
       }
-
 
     }else{
       UtilsWidgets.errorSnack( "No Internet Connection");
@@ -111,8 +112,6 @@ class AuthController extends GetxController {
           userCtrl.aUser= aUser;
           userCtrl.imageUrl.value= aUser!.profilePictureUrl!;
 
-
-
           pd.close();
           Get.offAll(() => DashboardScreen());
 
@@ -139,23 +138,47 @@ class AuthController extends GetxController {
 
   }
 
+  confirmLogOut(){
+
+    showDialog(
+      context: Get.context!,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Log Out',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+          content: const Text('Pls confirm Log Out'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context); // Close the dialog
+              },
+              child:  Text('Cancel',style: TextStyle(color: MyStyles.colorPrimary)),
+            ),
+            TextButton(
+              onPressed: () async{
+                ProgressDialog pd=UtilsWidgets.showProgress("Signing Out", Get.context!);
+                await _authService.logOut();
+                pd.close();
+                Get.offAll(() => LoginScreen());// Close the dialog
+              },
+              child:  Text('Yes',style: TextStyle(color: MyStyles.colorPrimary)),
+            ),
+          ],
+        );
+      },
+    );
+
+  }
 
 
   Future logOut() async {
 
     bool isConnected= await UtilServices.checkInternetConnectivity();
     if(isConnected){
-
-      ProgressDialog pd=UtilsWidgets.showProgress("Signing Out", Get.context!);
-
-      await _authService.logOut();
-    pd.close();
-      Get.offAll(() => LoginScreen());
-
-    }else{
-
+      confirmLogOut();
+    }
+    else{
       UtilsWidgets.errorSnack("No Internet Connection");
-
     }
   }
 
@@ -173,5 +196,27 @@ class AuthController extends GetxController {
       UtilsWidgets.errorSnack( "No Internet Connection");
     }
   }
+
+  Future forgotPassword(String email) async{
+
+    bool isConnected= await UtilServices.checkInternetConnectivity();
+
+    if(isConnected){
+
+      ProgressDialog pd=UtilsWidgets.showProgress("Sending...", Get.context!);
+
+      await _authService.forgotPassword(email).then((value) => UtilsWidgets.successSnack("Email Sent")
+      );
+
+      pd.close();
+
+
+
+    }else{
+      UtilsWidgets.errorSnack( "No Internet Connection");
+    }
+
+  }
+
 
 }

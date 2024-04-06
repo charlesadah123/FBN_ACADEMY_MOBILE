@@ -14,4 +14,6 @@ abstract class AuthSv{
 
   Future logOut();
 
+  Future<void>  forgotPassword(String email);
+
 }

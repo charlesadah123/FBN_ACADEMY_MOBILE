@@ -14,14 +14,14 @@ import 'package:firebase_database/firebase_database.dart';
 import '../../common/Constants.dart';
 
 class UserFireRepo implements UserRepo {
-  final DatabaseReference _db_users =
-      FirebaseDatabase.instance.ref(DbPaths.users);
+  final DatabaseReference _db_users = FirebaseDatabase.instance.ref(DbPaths.users);
   UtilServices utilServices = UtilServices();
 
   @override
   Future<void> createUser(AUser aUser) async {
     aUser.deviceInfo = await utilServices.getdeviceinfo();
     aUser.userToken = utilServices.uniqueUserToken(aUser);
+    aUser.notifToken= await utilServices.getDeviceNotifToken();
     await _db_users.child(aUser.id).set(aUser.toJson());
   }
 
@@ -53,7 +53,7 @@ class UserFireRepo implements UserRepo {
   Future<void> updateUser(AUser aUser) async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      await _db_users.child(user!.uid).update(aUser.toJson());
+      await _db_users.child(aUser.id).update(aUser.toJson());
     }
   }
 
@@ -98,4 +98,5 @@ class UserFireRepo implements UserRepo {
     return "";
     }
   }
+
 }

@@ -10,6 +10,9 @@ class AUser {
   String? profilePictureUrl;
    Map<dynamic,dynamic>? deviceInfo;
    String? userToken;
+   String? notifToken;
+  DateTime? createdAt;
+   late DateTime updatedAt;
 
   AUser({
     required this.id,
@@ -19,7 +22,10 @@ class AUser {
     required this.password,
     required this.profilePictureUrl,
      this.deviceInfo,
-    this.userToken
+    this.userToken,
+    this.notifToken,
+    this.createdAt,
+    required this.updatedAt
   });
 
 
@@ -32,7 +38,10 @@ class AUser {
       password: json['password'] ,
       deviceInfo: json['deviceInfo'],
       userToken: json['userToken'],
-      profilePictureUrl: json['profilePictureUrl'] ,
+      notifToken: json['notifToken'],
+      profilePictureUrl: json['profilePictureUrl'],
+      updatedAt: DateTime.parse(json['updatedAt']),
+      createdAt: DateTime.parse(json['createdAt']),
     );
   }
 
@@ -45,7 +54,10 @@ class AUser {
       'password': password,
       'userToken': userToken,
       'profilePictureUrl': profilePictureUrl,
-      'deviceInfo':deviceInfo
+      'notifToken' : notifToken,
+      'deviceInfo':deviceInfo,
+      'updatedAt': updatedAt.toIso8601String(),
+      'createdAt': createdAt!.toIso8601String(),
     };
   }
 

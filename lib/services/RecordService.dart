@@ -4,10 +4,9 @@ import 'package:fbn_academy_mobile/repository/firebase/RecordFireRepo.dart';
 import 'package:fbn_academy_mobile/services/abs/RecordSv.dart';
 
 class RecordService implements RecordSv {
-  final RecordRepo _recordRepo;
+ RecordRepo _recordRepo;
 
-  RecordService([RecordRepo? recordRepo])
-      : _recordRepo = recordRepo ?? RecordFireRepo();
+  RecordService([RecordRepo? recordRepo]) : _recordRepo = recordRepo ?? RecordFireRepo();
 
   @override
   Future<void> createRecord(AttendanceRecord record) async {
@@ -31,6 +30,7 @@ class RecordService implements RecordSv {
 
   @override
   Future<void> updateRecord(AttendanceRecord record) async {
+    record.updatedAt=DateTime.now();
     await _recordRepo.updateRecord(record);
   }
 }

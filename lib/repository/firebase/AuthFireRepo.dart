@@ -92,4 +92,13 @@ class AuthFireRepo implements AuthRepo {
     await FirebaseAuth.instance.signOut();
   }
 
+  @override
+  Future<void> forgotPassword(String email) async{
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+  }
+
+
+
+
+
 }

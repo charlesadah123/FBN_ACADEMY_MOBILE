@@ -3,11 +3,13 @@ import 'package:fbn_academy_mobile/common/UtilsWidgets.dart';
 import 'package:fbn_academy_mobile/controllers/DashboardController.dart';
 import 'package:fbn_academy_mobile/controllers/UserController.dart';
 import 'package:fbn_academy_mobile/screens/dashboard/AbsenteeLeaveSection.dart';
+import 'package:fbn_academy_mobile/screens/dashboard/RecordsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../common/Constants.dart';
 import '../../models/ChartData.dart';
+import '../../models/Record.dart';
 import '../profile/ProfileScreen.dart';
 import '../widgets/DurationSelectionWidget.dart';
 import '../widgets/menu.dart';
@@ -21,22 +23,25 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+
   DashboardController dashCtrl = Get.put(DashboardController());
   UserController userCtrl = Get.find<UserController>();
-  late int present;
 
+  late int present;
   late int absent;
   late String checkIn;
   late int sickLeave;
   late int lateness;
   late int otherLeave;
-
+  late List<AttendanceRecord> absentRecord;
+  late List<AttendanceRecord> sickRecord;
+  late List<AttendanceRecord> latenessRecord;
+  late List<AttendanceRecord> otherRecord;
 
   @override
   void initState() {
     super.initState();
   }
-
 
   void getStats() {
     var statistics = dashCtrl.statistics.value;
@@ -44,14 +49,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
     present = statistics['totalDaysPresent'] ?? 0;
     absent = statistics['totalDaysAbsent'] ?? 0;
     checkIn = statistics['lastCheckInTime'] != null
-        ? UtilServices.formatDateTime(
-        statistics['lastCheckInTime']!)
+        ? UtilServices.formatDateTime(statistics['lastCheckInTime']!)
         : "None";
     sickLeave = statistics['totalSickLeaveDays'] ?? 0;
     lateness = statistics['totalLatenessDays'] ?? 0;
     otherLeave = statistics['totalOtherLeaveDays'] ?? 0;
-  }
 
+    absentRecord = statistics['absentRecords'];
+    sickRecord = statistics['sickRecords'];
+    latenessRecord = statistics['latenessRecords'];
+    otherRecord = statistics['otherRecords'];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,91 +89,107 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 onTap: () {
                   Get.to(ProfileScreen());
                 },
-                child:
-                SizedBox(
-                    width: 36,
-                    height: 36,
-                    child: CircleAvatar(radius: 30,
-                      backgroundImage:
-                      (userCtrl.imageUrl!.value.length == 0) ?
-                      const AssetImage(
-                          'assets/images/profileUser.png') as ImageProvider<
-                          Object> :
-                      NetworkImage(userCtrl.imageUrl!.value),
-                    )
-                ),
+                child: SizedBox(
+                    width: 26,
+                    height: 26,
+                    child: CircleAvatar(
+                      radius: 30,
+                      backgroundImage: (userCtrl.imageUrl!.value.length == 0)
+                          ? const AssetImage('assets/images/profileUser.png')
+                              as ImageProvider<Object>
+                          : NetworkImage(userCtrl.imageUrl!.value),
+                    )),
               );
             }),
+          ),
+          IconButton(
+            onPressed: () {
+              Get.to(RecordsScreen(
+                  pageTitle: "Attendance History",
+                  records: dashCtrl.records.value));
+            },
+            icon: Icon(
+              Icons.calendar_month,
+              color: MyStyles.colorPrimary,
+            ),
           ),
         ],
       ),
       body: Obx(() {
-        return dashCtrl.dashLoading.value ?
-        SizedBox(
-            height: Get.height,
-            child: Center(
-              child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                      MyStyles.colorPrimary)),
-            )
-        ) :
-        SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 19, right: 19, bottom: 24),
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                // this is the attendance & calender widget
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Attendance \nOverview',
-                      style: TextStyle(
-                        color: MyStyles.colorPrimary,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
+        return dashCtrl.dashLoading.value
+            ? SizedBox(
+                height: Get.height,
+                child: Center(
+                  child: CircularProgressIndicator(
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(MyStyles.colorPrimary)),
+                ))
+            : SingleChildScrollView(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(left: 19, right: 19, bottom: 24),
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 20,
                       ),
-                    ),
-                    DurationSelectionWidget(
-                      onDurationSelected: (startDate) {
-                        // Update statistics based on selected start date
-                        dashCtrl.calculateStatistics(duration: startDate);
-                      },
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Obx(() {
-                  getStats();
-                  return Column(
-                    children: <Widget>[
-                      buildAttendanceOverview(),
-                      const SizedBox(height: 20),
-                      buildChart(),
-                      const SizedBox(height: 20),
-                      buildAbsenteeLeaveSection(),
-                      const SizedBox(height: 10),
-                      SizedBox(
-                          width: double.infinity,
-                          child: buildTakeAttendanceButton()),
-                    ],
-                  );
-                }),
+                      // this is the attendance & calender widget
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Attendance \nOverview',
+                            style: TextStyle(
+                              color: MyStyles.colorPrimary,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          DurationSelectionWidget(
+                            onDurationSelected: (startDate) {
+                              // Update statistics based on selected start date
+                              dashCtrl.calculateStatistics(duration: startDate);
+                            },
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Obx(() {
+                        getStats();
+                        return Column(
+                          children: <Widget>[
+                            buildAttendanceOverview(),
+                            const SizedBox(height: 20),
+                            dashCtrl.records.value.isNotEmpty
+                                ? buildChart()
+                                :  Padding(
+                                  padding: const EdgeInsets.only(top: 12),
+                                  child: Text("No Chart Data Available",
+                                          style: TextStyle(
+                                            color: Colors.grey.shade400,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500)),
+                                ),
+                            const SizedBox(height: 20),
+                            buildAbsenteeLeaveSection(),
+                            const SizedBox(height: 10),
+                            SizedBox(
+                                width: double.infinity,
+                                child: buildTakeAttendanceButton()),
+                          ],
+                        );
+                      }),
 
-                const SizedBox(height: 20)
-              ],
-            ),
-          ),
-        );
+                      const SizedBox(height: 20)
+                    ],
+                  ),
+                ),
+              );
       }),
     );
   }
-
 
   Widget buildAttendanceOverview() {
     return Row(
@@ -229,7 +253,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
               const SizedBox(height: 5),
               Text(
-                checkIn ?? 'Not Yet',
+                dashCtrl.records.value.isNotEmpty ? checkIn : "N/A",
                 style: TextStyle(
                   color: MyStyles.colorPrimary,
                   fontSize: 28,
@@ -248,7 +272,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       opacity: 0.50,
       child: Text(
         text,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.black,
           fontSize: 12,
           fontWeight: FontWeight.w400,
@@ -305,11 +329,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget buildAbsenteeLeaveSection() {
     return AbsenteeLeaveSection(
-      absenteeReason: const ['Lateness', 'Sick Leaves', 'Other Leaves'],
+      absenteeReason: const [
+        'Absent',
+        'Lateness',
+        'Sick Leaves',
+        'Other Leaves'
+      ],
       numberOfDays: [
+        '$absent ${absent == 1 ? 'day' : 'days'}',
         '$lateness ${lateness == 1 ? 'day' : 'days'}',
         '$sickLeave ${sickLeave == 1 ? 'day' : 'days'}',
         '$otherLeave ${otherLeave == 1 ? 'day' : 'days'}'
+      ],
+      absenteeFunctions: [
+        () {
+          Get.to(RecordsScreen(records: absentRecord, pageTitle: "Absents"));
+        },
+        () {
+          Get.to(RecordsScreen(records: latenessRecord, pageTitle: "Lateness"));
+        },
+        () {
+          Get.to(RecordsScreen(records: sickRecord, pageTitle: "Sick Leaves"));
+        },
+        () {
+          Get.to(
+              RecordsScreen(records: otherRecord, pageTitle: "Other Leaves"));
+        },
       ],
     );
   }
@@ -336,7 +381,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-
   Widget myChart(int present, int absent) {
     return Card(
         shape: RoundedRectangleBorder(
@@ -360,8 +404,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  List<DoughnutSeries<ChartData, String>> _getRoundedDoughnutSeries(int present,
-      int absent) {
+  List<DoughnutSeries<ChartData, String>> _getRoundedDoughnutSeries(
+      int present, int absent) {
     final List<ChartData> chartData = <ChartData>[
       ChartData(x: 'Present', y: present),
       ChartData(x: 'Absent', y: absent),
@@ -382,7 +426,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         innerRadius: '80%',
         xValueMapper: (ChartData data, _) => data.x as String,
         yValueMapper: (ChartData data, _) => data.y,
-
       ),
     ];
   }

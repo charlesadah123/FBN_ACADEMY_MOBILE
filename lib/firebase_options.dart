@@ -54,6 +54,7 @@ class DefaultFirebaseOptions {
     appId: '1:275873199117:android:03a7068f0671db7b439144',
     messagingSenderId: '275873199117',
     projectId: 'firstattendance-2f7a4',
+    databaseURL: 'https://firstattendance-2f7a4-default-rtdb.firebaseio.com',
     storageBucket: 'firstattendance-2f7a4.appspot.com',
   );
 
@@ -62,6 +63,7 @@ class DefaultFirebaseOptions {
     appId: '1:275873199117:ios:488e46568a17058b439144',
     messagingSenderId: '275873199117',
     projectId: 'firstattendance-2f7a4',
+    databaseURL: 'https://firstattendance-2f7a4-default-rtdb.firebaseio.com',
     storageBucket: 'firstattendance-2f7a4.appspot.com',
     iosBundleId: 'com.example.fbnAcademyMobile',
   );

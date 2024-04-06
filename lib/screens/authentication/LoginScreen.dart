@@ -1,3 +1,4 @@
+import 'package:fbn_academy_mobile/screens/authentication/ForgotPasswordScreen.dart';
 import 'package:fbn_academy_mobile/screens/authentication/RegisterScreen.dart';
 import 'package:fbn_academy_mobile/screens/dashboard/DashboardScreen.dart';
 import 'package:flutter/material.dart';
@@ -164,7 +165,7 @@ class LoginScreen extends StatelessWidget {
   Widget forgotPassword() {
     return GestureDetector(
       onTap: () {
-        print("forgot password clicked");
+        Get.to(const ForgotPasswordScreen());
       },
       child: Text('Forgot Password?',
           style: TextStyle(

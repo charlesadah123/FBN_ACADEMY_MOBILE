@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:fbn_academy_mobile/common/AppConfig.dart';
 import 'package:fbn_academy_mobile/common/Constants.dart';
 import 'package:fbn_academy_mobile/controllers/AuthController.dart';
 import 'package:fbn_academy_mobile/models/Record.dart';
@@ -26,6 +27,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await AppConfig.initialize();
+  await UtilServices.startNotificationListener();
 
    Get.put(UserController());
    Get.put(AuthController());

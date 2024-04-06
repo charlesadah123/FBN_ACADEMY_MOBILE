@@ -12,7 +12,7 @@ import '../../models/User.dart';
 
 class ProfileScreen extends StatefulWidget {
 
-  ProfileScreen({super.key});
+  const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -89,18 +89,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 TextStyle(color: Colors.grey.shade500,),
               ),
               const SizedBox(height: 24,),
-              _buildSingleRow(
-                  title: aUser!.fullName, icon: Icons.person),
+              _buildSingleRow(title: aUser!.fullName, icon: Icons.person),
               const SizedBox(height: 14,),
-              Divider(),
+              const Divider(),
               const SizedBox(height: 14,),
               _buildSingleRow(title: aUser!.email, icon: Icons.mail),
               const SizedBox(height: 14,),
-              Divider(),
+              const Divider(),
               const SizedBox(height: 14,),
               _buildSingleRow(title: aUser!.phone, icon: Icons.smartphone),
               const SizedBox(height: 14,),
-              Divider(),
+              const Divider(),
               const SizedBox(height: 50,),
               Center(
                 child: TextButton(
@@ -109,7 +108,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     },
                     child: Text("Log Out",
                         style: TextStyle(
-                          decoration: TextDecoration.underline,
                           color: MyStyles.colorPrimary,
                           fontSize: 25,
                           fontWeight: FontWeight.w800,

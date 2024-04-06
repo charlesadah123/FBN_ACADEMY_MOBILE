@@ -11,7 +11,7 @@ class AttendanceRecord {
   final String deviceToken;
   final String userToken;
    DateTime? createdAt;
-  final DateTime updatedAt;
+  late  DateTime updatedAt;
 
 
   AttendanceRecord({

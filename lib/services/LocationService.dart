@@ -33,6 +33,14 @@ class LocationService {
   }
 
 
+
+  Future<bool> isLocationServiceEnabled() async{
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
+    return serviceEnabled;
+  }
+
+
   Future<double> calculateProximity(double lat, double lon) async {
     Position position= await determinePosition();
 

@@ -56,4 +56,18 @@ class AuthService implements AuthSv {
       return false;
     }
   }
+
+  @override
+  Future<void> forgotPassword(String email) async{
+    try{
+      await _authRepo.forgotPassword(email);
+
+    }
+    catch(e){
+      UtilServices.handleAuthError(e);
+    }
+  }
+
+
+
 }

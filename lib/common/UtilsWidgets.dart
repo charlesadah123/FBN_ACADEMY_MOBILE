@@ -260,11 +260,11 @@ class UtilsWidgets {
         msgTextAlign: TextAlign.start,
         msg: '$text...',
         progressType: ProgressType.normal,
-        backgroundColor: Colors.white,
-        progressValueColor: MyStyles.colorPrimary.withOpacity(0.7),
-        msgColor: MyStyles.colorPrimary,
-        valueColor: MyStyles.colorPrimary,
-        progressBgColor: Colors.grey.shade300
+        backgroundColor: Color(0xff212121),
+    progressValueColor: Colors.green,
+    progressBgColor: Colors.white70,
+    msgColor: Colors.white,
+    valueColor: Colors.white
     );
 
 

@@ -4,20 +4,39 @@ import 'dart:typed_data';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:device_info/device_info.dart';
+import 'package:fbn_academy_mobile/common/AppConfig.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:crypto/crypto.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import '../models/Record.dart';
 import '../models/User.dart';
 import 'Constants.dart';
 
 class UtilServices {
 
+   Future<String?> getDeviceNotifToken() async {
+    final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
+    return await firebaseMessaging.getToken();
+  }
+
+
+   static startNotificationListener() async{
+     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+       print("Received message: ${message.notification!.body}");
+       // process notification from Notification Service;
+     });
+     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+   }
+
+   static Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+     print("Handling a background message: ${message.messageId}");
+     //process notification from Notification Service
+   }
 
   Future<Map<dynamic, dynamic>?> getdeviceinfo() async {
-    Map<dynamic, dynamic?> mapDeviceInfo;
+    Map<dynamic, dynamic> mapDeviceInfo;
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     String? deviceid;
 
@@ -53,14 +72,12 @@ class UtilServices {
         Dbkeys.deviceInfoLOGINTIMESTAMP: DateTime.now().toIso8601String(),
       };
     }
-  }
+
+   }
 
   String? encryptPassword(String password) {
-
-      print("inside encrypt password");
-
       // Encrypt the  information
-      Uint8List encryptedBytes = _encrypt(password, MyConstants.encryptionKey2);
+      Uint8List encryptedBytes = _encrypt(password, AppConfig.encryptionKey2);
 
       // Convert the encrypted bytes to a hexadecimal string
       String encryptedHex = _bytesToString(encryptedBytes);
@@ -78,7 +95,7 @@ class UtilServices {
           "${user!.uid}_${aUser.email}_${aUser.phone}_${aUser.fullName}_${DateTime.now().toIso8601String()}";
 
       // Encrypt the user information
-      Uint8List encryptedBytes = _encrypt(userInfo, MyConstants.encryptionKey1);
+      Uint8List encryptedBytes = _encrypt(userInfo, AppConfig.encryptionKey2);
 
       // Convert the encrypted bytes to a hexadecimal string
       String encryptedHex = _bytesToString(encryptedBytes);
@@ -101,7 +118,7 @@ class UtilServices {
           "${deviceInfo![Dbkeys.deviceInfoOS]}";
 
       // Encrypt the user information
-      Uint8List encryptedBytes = _encrypt(device, MyConstants.encryptionKey1);
+      Uint8List encryptedBytes = _encrypt(device, AppConfig.encryptionKey1);
 
       // Convert the encrypted bytes to a hexadecimal string
       String encryptedHex = _bytesToString(encryptedBytes);
@@ -213,17 +230,14 @@ class UtilServices {
           break;
       // Add more cases for handling specific error codes if needed
         default:
-          errorMessage = "An error occurred. Please try again later.";
+        errorMessage = "An error occurred. Please try again later.";
       }
     }
     else {
       // Handle other types of errors
       print("Error: $e");
     }
-
-
     return errorMessage;
-
   }
 
   static Future<bool> checkInternetConnectivity() async {
@@ -234,4 +248,13 @@ class UtilServices {
       return true; // Internet connection available
     }
   }
+
+   static DateTime removeDate(DateTime dateTime){
+     DateTime now = DateTime.now();
+     return  DateTime(now.year, now.month, now.day, dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond);
+   }
+
+   static String dateToString(DateTime date, String typeformat){
+     return DateFormat(typeformat).format(date);
+   }
 }

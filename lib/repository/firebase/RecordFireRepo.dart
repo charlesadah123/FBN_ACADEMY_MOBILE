@@ -8,23 +8,21 @@ import '../abs/RecordRepo.dart';
 
 class RecordFireRepo implements RecordRepo {
 
-  User? user=FirebaseAuth.instance.currentUser;
   DatabaseReference db_records= FirebaseDatabase.instance.ref(DbPaths.records);
 
   @override
   Future<void> createRecord(AttendanceRecord record) async{
+    User? user = FirebaseAuth.instance.currentUser;
     if( user!= null) {
       DatabaseReference pushed=  db_records.child(user!.uid).push();
       record.id=pushed.key;
      await  pushed.set(record.toJson());
-    //.update(record.toJson());
-
     }
   }
 
   @override
   Future<void> deleteRecord(int id) async{
-
+    User? user = FirebaseAuth.instance.currentUser;
     if(user !=null){
       return await db_records.child(user!.uid).remove();
     }
@@ -33,7 +31,7 @@ class RecordFireRepo implements RecordRepo {
 
   @override
   Future<List<AttendanceRecord>?> getAllRecordById(int id) async{
-
+    User? user = FirebaseAuth.instance.currentUser;
     if(user !=null){
 
       DataSnapshot snapshot = await db_records.child(user!.uid).get();
@@ -57,6 +55,7 @@ class RecordFireRepo implements RecordRepo {
 
   @override
   Future<AttendanceRecord?> getRecordById(int id) async{
+    User? user = FirebaseAuth.instance.currentUser;
     if(user !=null){
       return null;
     }
@@ -65,6 +64,7 @@ class RecordFireRepo implements RecordRepo {
 
   @override
   Future<void> updateRecord(AttendanceRecord record) async{
+    User? user = FirebaseAuth.instance.currentUser;
     return await db_records.child(user!.uid).child(record.id ?? "---").update(record.toJson());
 
   }

@@ -26,6 +26,7 @@ class UserService implements UserSv {
 
   @override
   Future<void> updateUser(AUser aUser) async{
+    aUser.updatedAt=DateTime.now();
     await _userRepo.updateUser(aUser);
   }
 
